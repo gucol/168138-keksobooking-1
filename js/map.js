@@ -131,7 +131,7 @@ var madeSimilarAds = function () {
 var similarAds = [];
 
 for (var i = 0; i < 8; i++) {
-  wizards.push(madeSimilarAds());
+  similarAds.push(madeSimilarAds());
 }
 
 //2. У блока .map уберите класс .map--faded
@@ -146,12 +146,29 @@ document.querySelector('.map').classList.remove('.map--faded');
 Координаты:style="left: {{location.x}}px; top: {{location.y}}px;"
 src="{{author.avatar}}"
 alt="{{заголовок объявления}}"
-*/
 
-/*
 4. Отрисуйте сгенерированные DOM-элементы в блок .map__pins. Для вставки 
 элементов используйте DocumentFragment.
 */
+
+// Нахожу место, куда вставляем элементы
+var pinsList = document.querySelector('.map__pins');
+
+// нахожу шаблон и разметку
+var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+
+/*
+Выведите заголовок объявления offer.title в заголовок .popup__title.
+Выведите адрес offer.address в блок .popup__text--address.
+Выведите цену offer.price в блок .popup__text--price строкой вида {{offer.price}}₽/ночь. Например, 5200₽/ночь.
+В блок .popup__type выведите тип жилья offer.type: Квартира для flat, Бунгало для bungalo, Дом для house, Дворец для palace.
+Выведите количество гостей и комнат offer.rooms и offer.guests в блок .popup__text--capacity строкой вида {{offer.rooms}} комнаты для {{offer.guests}} гостей. Например, 2 комнаты для 3 гостей.
+Время заезда и выезда offer.checkin и offer.checkout в блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд до 12:00.
+В список .popup__features выведите все доступные удобства в объявлении.
+В блок .popup__description выведите описание объекта недвижимости offer.description.
+В блок .popup__photos выведите все фотографии из списка offer.photos. Каждая из строк массива photos должна записываться как src соответствующего изображения.
+*/
+
 
 /*
 5. На основе первого по порядку элемента из сгенерированного массива и 
