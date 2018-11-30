@@ -213,30 +213,39 @@ var renderPins = function () {
 /*
 Выведите заголовок объявления offer.title в заголовок .popup__title.
 Выведите адрес offer.address в блок .popup__text--address.
-Выведите цену offer.price в блок .popup__text--price строкой вида {{offer.price}}₽/ночь. Например, 5200₽/ночь.
-В блок .popup__type выведите тип жилья offer.type: Квартира для flat, Бунгало для bungalo, Дом для house, Дворец для palace.
-Выведите количество гостей и комнат offer.rooms и offer.guests в блок .popup__text--capacity строкой вида {{offer.rooms}} комнаты для {{offer.guests}} гостей. Например, 2 комнаты для 3 гостей.
-Время заезда и выезда offer.checkin и offer.checkout в блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд до 12:00.
-В список .popup__features выведите все доступные удобства в объявлении.
-В блок .popup__description выведите описание объекта недвижимости offer.description.
-В блок .popup__photos выведите все фотографии из списка offer.photos. Каждая из строк массива photos должна записываться как src соответствующего изображения.
+Выведите цену offer.price в блок .popup__text--price 
+строкой вида {{offer.price}}₽/ночь. Например, 5200₽/ночь.
+В блок .popup__type выведите тип жилья offer.type: 
+Квартира для flat, Бунгало для bungalo, Дом для house, 
+Дворец для palace.
+Выведите количество гостей и комнат offer.rooms и offer.guests 
+в блок .popup__text--capacity строкой вида {{offer.rooms}} 
+комнаты для {{offer.guests}} гостей. Например, 2 комнаты для 3 
+гостей.
+Время заезда и выезда offer.checkin и offer.checkout в 
+блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, 
+выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд 
+до 12:00.
+В список .popup__features выведите все доступные удобства в 
+объявлении.
+В блок .popup__description выведите описание объекта недвижимости 
+offer.description.
+В блок .popup__photos выведите все фотографии из списка 
+offer.photos. Каждая из строк массива photos должна записываться 
+как src соответствующего изображения.
 */
 
-var createCard = function (similarAd) {
+var createCard = function (ad) {
 	var card = cardTemplate.cloneNode(true);
-	card.querySelector('.popup__title').textContent = similarAd.offer.title;
-	card.querySelector('.popup__text--address').textContent = similarAd.offer.address;
-	card.querySelector('.popup__text--price').textContent = similarAd.offer.price + '₽/ночь';
-	// card.querySelector('.popup__type').textContent = similarAd.offer.type дописать
-	card.querySelector('.popup__text--time').textContent = 'Заезд после ' + similarAd.offer.checkin + ', выезд до ' + similarAd.offer.checkout;
+	card.querySelector('.popup__title').textContent = ad.offer.title;
+	card.querySelector('.popup__text--address').textContent = ad.offer.address;
+	card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
+	card.querySelector('.popup__type').textContent = getCardType(ad.offer.type); 
+	//
+	card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 	// card.querySelector('.popup__feature').classList = drawElementFeatures(similarAd); как-то так
-	card.querySelector('.popup__description').textContent = similarAd.offer.description;
+	card.querySelector('.popup__description').textContent = ad.offer.description;
 	// card.querySelector('.popup__photos') дописать
+	return card;
 }
 
-/*
-5. На основе первого по порядку элемента из сгенерированного массива и 
-шаблона .map__card создайте DOM-элемент объявления, заполните его данными 
-из объекта и вставьте полученный DOM-элемент в блок .map перед блоком
-.map__filters-container:
-*/
