@@ -5,11 +5,21 @@
 Структура объектов — в задании: https://up.htmlacademy.ru/javascript/16/tasks/13
 */
 
-// константы для координат
+// константы
 var MIN_COORDINATE_X = 0;
 var MAX_COORDINATE_X = 1200;
 var MIN_COORDINATE_Y = 130;
 var MAX_COORDINATE_Y = 630;
+var MIN_PRICE = 1000;
+var MAX_PRICE = 1000000;
+var MIN_ROOMS = 1;
+var MAX_ROOMS = 5;
+var MIN_GESTS = 1;
+var MAX_GESTS = 50;
+var NUMBER_OF_PINS = 8;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+
 
 // массив значений для ключа title
 var titles = [
@@ -110,13 +120,13 @@ var madeSimilarAds = function (index) {
       // строка, адрес предложения, представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
       address:  location.x + ', ' + location.y,
       // число, случайная цена от 1000 до 1 000 000 (см формулу случайных чисел)
-      price: randomNumberReturn(1000, 1000000),
+      price: randomNumberReturn(MIN_PRICE, MAX_PRICE),
       // строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
       type: randomIndexReturn(types),
       // число, случайное количество комнат от 1 до 5
-      rooms: randomNumberReturn(1, 5),
+      rooms: randomNumberReturn(MIN_ROOMS, MAX_ROOMS),
       // число, случайное количество гостей, которое можно разместить (проверить)
-      guests: randomNumberReturn(1, 50),
+      guests: randomNumberReturn(MIN_GESTS, MAX_GESTS),
       // строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
       checkin: randomIndexReturn(times),
       checkout: randomIndexReturn(times), 
@@ -142,7 +152,7 @@ var madeSimilarAds = function (index) {
 // Создание массива из восьми меток:
 var similarAds = [];
 
-for (var i = 0; i < 8; i++) {
+for (var i = 0; i < NUMBER_OF_PINS; i++) {
   similarAds.push(madeSimilarAds(i));
 }
 
@@ -159,7 +169,18 @@ document.querySelector('.map').classList.remove('.map--faded');
 Координаты:style="left: {{location.x}}px; top: {{location.y}}px;"
 src="{{author.avatar}}"
 alt="{{заголовок объявления}}"
+*/
+// Функция создания одного DOM-элемента на основе данных из объекта 
+var getMapPin = function (similarAd) {
+  var pinElement = pin.cloneNode(true);
+  pinElement.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
+  pinElement.style.top = similarAd.location.y - PIN_HEIGHT + 'px';
+  pinElement.querySelector('img').src = similarAd.author.avatar;
+  pinElement.querySelector('img').alt = similarAd.offer.title;
+  return pinElement;
+};
 
+/*
 4. Отрисуйте сгенерированные DOM-элементы в блок .map__pins. Для вставки 
 элементов используйте DocumentFragment.
 */
