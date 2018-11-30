@@ -1,11 +1,5 @@
 'use strict';
-/*
-1. Создайте массив, состоящий из 8 сгенерированных JS объектов, 
-которые будут описывать похожие объявления неподалёку. 
-Структура объектов — в задании: https://up.htmlacademy.ru/javascript/16/tasks/13
-*/
 
-// константы
 var MIN_COORDINATE_X = 0;
 var MAX_COORDINATE_X = 1200;
 var MIN_COORDINATE_Y = 130;
@@ -20,9 +14,8 @@ var NUMBER_OF_PINS = 8;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
-
 // массив значений для ключа title
-var titles = [
+var TITLES = [
   'Большая уютная квартира', 
   'Маленькая неуютная квартира', 
   'Огромный прекрасный дворец', 
@@ -34,14 +27,14 @@ var titles = [
 ]
 
 //массив из строк для ключа photos в объекте
-var photos = [
+var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg', 
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
 // массив строк случайной длины для ключа features в объекте
-var features = [
+var FEATURES = [
   'wifi',
   'dishwasher',
   'parking',
@@ -52,27 +45,34 @@ var features = [
 
 var featuresList = function () {
   var innerArray = [];
-  var randomNumber = randomNumberReturn(0, features.length);
+  var randomNumber = randomNumberReturn(0, FEATURES.length);
   for (var i = 0; i < randomNumber; i++) {
-    innerArray.push(features[i]);
+    innerArray.push(FEATURES[i]);
   }
   return innerArray;
 }
 
 // массив значений для checkin и checkout
-var times = [
+var TIMES = [
   '12:00',
   '13:00',
   '14:00'
 ]
 
 // строка с одним из четырёх фиксированных значений для ключа type
-var types = [
+var TYPES = [
   'palace',
   'flat',
   'house',
   'bungalo'
 ]
+
+// Нахожу место, куда вставляем элементы
+var pinsList = document.querySelector('.map__pins');
+
+// Нахожу шаблон и разметку для метки и для карточки
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 // Функция, возвращающая случайный элемент массива:
 var randomIndexReturn = function (processedArray) {
@@ -102,40 +102,36 @@ var shuffle = function (sortedArray) {
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
 var madeSimilarAds = function (index) {
   var location = {
-    // !!! случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
     x: randomNumberReturn(MIN_COORDINATE_X, MAX_COORDINATE_X),
-    // случайное число, координата y метки на карте от 130 до 630.
     y: randomNumberReturn(MIN_COORDINATE_Y, MAX_COORDINATE_Y)
   }
   var similarAd = {
     author: {
-	  // Строка, адрес изображения вида img/avatars/user{{xx}}.png, где {{xx}} это число от 1 до 8 с ведущим нулём. 
-	  // Например, 01, 02 и т. д. Адреса изображений не повторяются
       avatar: 'img/avatars/user0' + (index + 1) + '.png'
   	},
 
   	offer: {
   	  // строка, заголовок предложения, одно из фиксированных значений из массива titles. Значения не должны повторяться.
-      title: randomIndexReturn(titles),
+      title: randomIndexReturn(TITLES[index]),
       // строка, адрес предложения, представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
       address:  location.x + ', ' + location.y,
       // число, случайная цена от 1000 до 1 000 000 (см формулу случайных чисел)
       price: randomNumberReturn(MIN_PRICE, MAX_PRICE),
       // строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
-      type: randomIndexReturn(types),
+      type: randomIndexReturn(TYPES),
       // число, случайное количество комнат от 1 до 5
       rooms: randomNumberReturn(MIN_ROOMS, MAX_ROOMS),
       // число, случайное количество гостей, которое можно разместить (проверить)
       guests: randomNumberReturn(MIN_GESTS, MAX_GESTS),
       // строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
-      checkin: randomIndexReturn(times),
-      checkout: randomIndexReturn(times), 
+      checkin: randomIndexReturn(TIMES),
+      checkout: randomIndexReturn(TIMES), 
       // массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner",
       features: featuresList(),
       // пустая строка
       description: '',
       // массив photos, элементы которого расположенны в произвольном порядке
-      photos: shuffle(photos)
+      photos: shuffle(PHOTOS)
   	},
 
   	location: {
@@ -156,7 +152,7 @@ for (var i = 0; i < NUMBER_OF_PINS; i++) {
   similarAds.push(madeSimilarAds(i));
 }
 
-console.log(similarAds);
+
 //2. У блока .map уберите класс .map--faded
 document.querySelector('.map').classList.remove('.map--faded');
 
@@ -170,14 +166,14 @@ document.querySelector('.map').classList.remove('.map--faded');
 src="{{author.avatar}}"
 alt="{{заголовок объявления}}"
 */
-// Функция создания одного DOM-элемента на основе данных из объекта 
+// Функция, передающая в метку необходимые значения 
 var getMapPin = function (similarAd) {
-  var pinElement = pin.cloneNode(true);
-  pinElement.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
-  pinElement.style.top = similarAd.location.y - PIN_HEIGHT + 'px';
-  pinElement.querySelector('img').src = similarAd.author.avatar;
-  pinElement.querySelector('img').alt = similarAd.offer.title;
-  return pinElement;
+  var pin = pinTemplate.cloneNode(true);
+  pin.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
+  pin.style.top = similarAd.location.y - PIN_HEIGHT + 'px';
+  pin.querySelector('img').src = similarAd.author.avatar;
+  pin.querySelector('img').alt = similarAd.offer.title;
+  return pin;
 };
 
 /*
@@ -185,11 +181,13 @@ var getMapPin = function (similarAd) {
 элементов используйте DocumentFragment.
 */
 
-// Нахожу место, куда вставляем элементы
-var pinsList = document.querySelector('.map__pins');
+// Функция создания фрагмента DOM-элементов 'Метка на карте', на основе данных из массива similarAds
+var renderPins = function () {
+	var fragment = document.createDocumentFragment();
+	for (var i = 0; i < similarAds.length; i++) {
 
-// нахожу шаблон и разметку
-var pin = document.querySelector('#pin').content.querySelector('.map__pin');
+	}
+}
 
 /*
 Выведите заголовок объявления offer.title в заголовок .popup__title.
@@ -203,6 +201,17 @@ var pin = document.querySelector('#pin').content.querySelector('.map__pin');
 В блок .popup__photos выведите все фотографии из списка offer.photos. Каждая из строк массива photos должна записываться как src соответствующего изображения.
 */
 
+var createCard = function (similarAd) {
+	var card = cardTemplate.cloneNode(true);
+	card.querySelector('.popup__title').textContent = similarAd.offer.title;
+	card.querySelector('.popup__text--address').textContent = similarAd.offer.address;
+	card.querySelector('.popup__text--price').textContent = similarAd.offer.price + '₽/ночь';
+	// card.querySelector('.popup__type').textContent = similarAd.offer.type дописать
+	card.querySelector('.popup__text--time').textContent = 'Заезд после ' + similarAd.offer.checkin + ', выезд до ' + similarAd.offer.checkout;
+	// card.querySelector('.popup__feature').classList = drawElementFeatures(similarAd); как-то так
+	card.querySelector('.popup__description').textContent = similarAd.offer.description;
+	// card.querySelector('.popup__photos') дописать
+}
 
 /*
 5. На основе первого по порядку элемента из сгенерированного массива и 
