@@ -5,6 +5,12 @@
 Структура объектов — в задании: https://up.htmlacademy.ru/javascript/16/tasks/13
 */
 
+// константы для координат
+var MIN_COORDINATE_X = 0;
+var MAX_COORDINATE_X = 1200;
+var MIN_COORDINATE_Y = 130;
+var MAX_COORDINATE_Y = 630;
+
 // массив значений для ключа title
 var titles = [
   'Большая уютная квартира', 
@@ -87,9 +93,9 @@ var shuffle = function (sortedArray) {
 var madeSimilarAds = function (index) {
   var location = {
     // !!! случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
-    x: randomNumberReturn(130, 630),
+    x: randomNumberReturn(MIN_COORDINATE_X, MAX_COORDINATE_X),
     // случайное число, координата y метки на карте от 130 до 630.
-    y: randomNumberReturn(130, 630)
+    y: randomNumberReturn(MIN_COORDINATE_Y, MAX_COORDINATE_Y)
   }
   var similarAd = {
     author: {
