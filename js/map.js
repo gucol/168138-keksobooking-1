@@ -35,12 +35,12 @@ var features = [
 ]
 
 var featuresList = function () {
-  var array;
+  var innerArray = [];
   var randomNumber = randomNumberReturn(0, features.length);
   for (var i = 0; i < randomNumber; i++) {
-    array.push[features[i]];
+    innerArray.push(features[i]);
   }
-  return array;
+  return innerArray;
 }
 
 // массив значений для checkin и checkout
@@ -59,9 +59,9 @@ var types = [
 ]
 
 // Функция, возвращающая случайный элемент массива:
-var randomIndexReturn = function (array) {
-  var randomIndex = Math.floor(Math.random() * array.length);
-  return array[randomIndex];
+var randomIndexReturn = function (processedArray) {
+  var randomIndex = Math.floor(Math.random() * processedArray.length);
+  return processedArray[randomIndex];
 };
 
 // Функция, возвращающая случайное число из диапазона:
@@ -71,32 +71,38 @@ var randomNumberReturn = function ( min, max) {
 }
 
 // Функция, возвращающая элементы массива в случайном порядке (Фишер-Йетс):
-var shuffle = function (array) {
+var shuffle = function (sortedArray) {
   var randomItem;
   var box;
-  for(var lastItem = arr.length - 1; lastItem > 0; lastItem--){
+  for(var lastItem = sortedArray.length - 1; lastItem > 0; lastItem--){
     randomItem = Math.floor(Math.random()*(lastItem + 1));
-    box = array[randomItem];
-    array[randomItem] = array[lastItem];
-    array[lastItem] = box;
+    box = sortedArray[randomItem];
+    sortedArray[randomItem] = sortedArray[lastItem];
+    sortedArray[lastItem] = box;
   }
-  return array;
+  return sortedArray;
 }
 
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
-var madeSimilarAds = function () {
+var madeSimilarAds = function (index) {
+  var location = {
+    // !!! случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
+    x: randomNumberReturn(130, 630),
+    // случайное число, координата y метки на карте от 130 до 630.
+    y: randomNumberReturn(130, 630)
+  }
   var similarAd = {
     author: {
 	  // Строка, адрес изображения вида img/avatars/user{{xx}}.png, где {{xx}} это число от 1 до 8 с ведущим нулём. 
 	  // Например, 01, 02 и т. д. Адреса изображений не повторяются
-      avatar: 'img/avatars/user0' + randomNumberReturn(1, 8) + '.png'
+      avatar: 'img/avatars/user0' + (index + 1) + '.png'
   	},
 
   	offer: {
   	  // строка, заголовок предложения, одно из фиксированных значений из массива titles. Значения не должны повторяться.
       title: randomIndexReturn(titles),
       // строка, адрес предложения, представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
-      address:  similarAd.location.x + ', ' + similarAd.location.y,
+      address:  location.x + ', ' + location.y,
       // число, случайная цена от 1000 до 1 000 000 (см формулу случайных чисел)
       price: randomNumberReturn(1000, 1000000),
       // строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
@@ -109,7 +115,7 @@ var madeSimilarAds = function () {
       checkin: randomIndexReturn(times),
       checkout: randomIndexReturn(times), 
       // массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner",
-      features: featuresList,
+      features: featuresList(),
       // пустая строка
       description: '',
       // массив photos, элементы которого расположенны в произвольном порядке
@@ -118,9 +124,9 @@ var madeSimilarAds = function () {
 
   	location: {
   	  // !!! случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
-      x: randomNumberReturn(130, 630),
+      x: location.x,
       // случайное число, координата y метки на карте от 130 до 630.
-      y: randomNumberReturn(130, 630)
+      y: location.y
   	}
   }
 
@@ -131,9 +137,10 @@ var madeSimilarAds = function () {
 var similarAds = [];
 
 for (var i = 0; i < 8; i++) {
-  similarAds.push(madeSimilarAds());
+  similarAds.push(madeSimilarAds(i));
 }
 
+console.log(similarAds);
 //2. У блока .map уберите класс .map--faded
 document.querySelector('.map').classList.remove('.map--faded');
 
