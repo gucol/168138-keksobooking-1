@@ -99,6 +99,27 @@ var shuffle = function (sortedArray) {
   return sortedArray;
 }
 
+/*Функция, переводящая данные из type на русский язык.
+Квартира для flat, Бунгало для bungalo, Дом для house, Дворец для palace.*/
+var getCardType = function (type) {
+  var translateType = 'Абы что';
+    switch (type) {
+      case 'flat':
+        translateType = 'Квартира';
+        break;
+      case 'bungalo':
+        translateType = 'Бунгало';
+        break;
+      case 'house':
+        translateType = 'Дом';
+        break;
+      case 'palace':
+        translateType = 'Дворец';
+        break;
+    }
+    return translateType;
+}
+
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
 var madeSimilarAds = function (index) {
   var location = {
