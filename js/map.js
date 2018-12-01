@@ -48,7 +48,7 @@ var FEATURES = [
 // Функция, возвращающая массив фич случайной длины:
 var featuresList = function () {
   var innerArray = [];
-  var randomNumber = randomNumberReturn(0, FEATURES.length);
+  var randomNumber = randomNumberReturn(0, FEATURES.length-1);
   for (var i = 0; i < randomNumber; i++) {
     innerArray.push(FEATURES[i]);
   }
@@ -220,8 +220,6 @@ var drawPhotosList = function (photos) {
   }
   return fragment;
 }
-
-debugger;
 
 // Функция создания карточки:
 var createCard = function (ad) {
