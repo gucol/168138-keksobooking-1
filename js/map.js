@@ -13,6 +13,8 @@ var MAX_GESTS = 50;
 var NUMBER_OF_PINS = 8;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var CARD_PHOTO_WIDTH = 45;
+var CARD_PHOTO_HEIGTH = 40;
 
 // массив значений для ключа title
 var TITLES = [
@@ -74,8 +76,6 @@ var pinsList = document.querySelector('.map__pins');
 // Нахожу шаблон и разметку для метки и для карточки
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
-var 
 
 // Функция, возвращающая случайный элемент массива:
 var randomIndexReturn = function (processedArray) {
@@ -201,14 +201,15 @@ var getMapPin = function (similarAd) {
 };
 
 // Функция рендера пина
-var renderPins = function () {
+var renderPins = function (arr) {
 	var fragment = document.createDocumentFragment();
-	for (var i = 0; i < similarAds.length; i++) {
-		fragment.appendChild(getMapPin(similarAds[i]));
+	for (var i = 0; i < arr.length; i++) {
+		fragment.appendChild(getMapPin(arr[i]));
 	}
 	pinsList.appendChild(fragment);
 }
 
+renderPins(similarAds);
 /*
 4. Отрисуйте сгенерированные DOM-элементы в блок .map__pins. Для вставки 
 элементов используйте DocumentFragment.
@@ -222,12 +223,29 @@ var createFeature = function (feature) {
 
 var drawFeaturesList = function (features) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < array.length; i++) {
-    fragment.appendChild(createFeature(array[i]));
+  for (var i = 0; i < features.length; i++) {
+    fragment.appendChild(createFeature(features[i]));
   }
   return fragment;
 }
 
+var createPhoto = function (photoSrc) {
+  var photoData = document.createElement('img');
+  photoData.classList.add('popup__photo');
+  photoData.width = CARD_PHOTO_WIDTH.toString();
+  photoData.height = CARD_PHOTO_HEIGTH.toString();
+  photoData.alt = 'Фотография жилища';
+  photoData.src = photoSrc;
+  return photoData;
+}
+
+var drawPhotosList = function (photos) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < photos.length; i++) {
+    fragment.appendChild(createFeature(photos[i]));
+  }
+  return fragment;
+}
 
 // Функция создаёт карточку
 var createCard = function (ad) {
@@ -260,3 +278,4 @@ var renderCard = function (card) {
 	map.insertBefore(card, map.querySelector('.map__filters-container'));
 }
 
+renderCard(createCard(similarAds[0]));
