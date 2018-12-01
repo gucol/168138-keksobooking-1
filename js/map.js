@@ -16,7 +16,7 @@ var PIN_HEIGHT = 70;
 var CARD_PHOTO_WIDTH = 45;
 var CARD_PHOTO_HEIGTH = 40;
 
-// массив значений для ключа title
+// Массив значений для ключа title:
 var TITLES = [
   'Большая уютная квартира', 
   'Маленькая неуютная квартира', 
@@ -28,14 +28,14 @@ var TITLES = [
   'Неуютное бунгало по колено в воде'
 ]
 
-//массив из строк для ключа photos в объекте
+// Массив из строк для ключа photos в объекте:
 var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg', 
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-// массив строк случайной длины для ключа features в объекте
+// Массив строк случайной длины для ключа features в объекте:
 var FEATURES = [
   'wifi',
   'dishwasher',
@@ -45,6 +45,7 @@ var FEATURES = [
   'conditioner'
 ]
 
+// Функция, возвращающая массив фич случайной длины:
 var featuresList = function () {
   var innerArray = [];
   var randomNumber = randomNumberReturn(0, FEATURES.length);
@@ -54,14 +55,14 @@ var featuresList = function () {
   return innerArray;
 }
 
-// массив значений для checkin и checkout
+// Массив значений для checkin и checkout:
 var TIMES = [
   '12:00',
   '13:00',
   '14:00'
 ]
 
-// строка с одним из четырёх фиксированных значений для ключа type
+// Массив с одним из значений для ключа type:
 var TYPES = [
   'palace',
   'flat',
@@ -69,11 +70,9 @@ var TYPES = [
   'bungalo'
 ]
 
-// Нахожу место, куда вставляем элементы
+// Переменные, хранящие ссылки на разметку:
 var map = document.querySelector('.map');
 var pinsList = document.querySelector('.map__pins');
-
-// Нахожу шаблон и разметку для метки и для карточки
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
@@ -102,8 +101,7 @@ var shuffle = function (sortedArray) {
   return sortedArray;
 }
 
-/*Функция, переводящая данные из type на русский язык.
-Квартира для flat, Бунгало для bungalo, Дом для house, Дворец для palace.*/
+// Функция, переводящая данные из type на русский язык:
 var getCardType = function (type) {
   var translateType = 'Абы что';
     switch (type) {
@@ -132,38 +130,26 @@ var madeSimilarAds = function (index) {
   var similarAd = {
     author: {
       avatar: 'img/avatars/user0' + (index + 1) + '.png'
-  	},
+    },
 
-  	offer: {
-  	  // строка, заголовок предложения, одно из фиксированных значений из массива titles. Значения не должны повторяться.
+    offer: {
       title: randomIndexReturn(TITLES[index]),
-      // строка, адрес предложения, представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
       address:  location.x + ', ' + location.y,
-      // число, случайная цена от 1000 до 1 000 000 (см формулу случайных чисел)
       price: randomNumberReturn(MIN_PRICE, MAX_PRICE),
-      // строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
       type: randomIndexReturn(TYPES),
-      // число, случайное количество комнат от 1 до 5
       rooms: randomNumberReturn(MIN_ROOMS, MAX_ROOMS),
-      // число, случайное количество гостей, которое можно разместить (проверить)
       guests: randomNumberReturn(MIN_GESTS, MAX_GESTS),
-      // строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
       checkin: randomIndexReturn(TIMES),
       checkout: randomIndexReturn(TIMES), 
-      // массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"
       features: featuresList(),
-      // пустая строка
       description: '',
-      // массив photos, элементы которого расположенны в произвольном порядке
       photos: shuffle(PHOTOS)
-  	},
+    },
 
-  	location: {
-  	  // !!! случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
+    location: {
       x: location.x,
-      // случайное число, координата y метки на карте от 130 до 630.
       y: location.y
-  	}
+    }
   }
 
   return similarAd;
@@ -176,21 +162,7 @@ for (var i = 0; i < NUMBER_OF_PINS; i++) {
   similarAds.push(madeSimilarAds(i));
 }
 
-
-//2. У блока .map уберите класс .map--faded
-map.classList.remove('.map--faded');
-
-/*
-3. На основе данных, созданных в первом пункте, создайте DOM-элементы, 
-соответствующие меткам на карте, и заполните их данными из массива. 
-Итоговую разметку метки .map__pin можно взять из шаблона #pin.
-
-У метки должны быть следующие данные:
-Координаты:style="left: {{location.x}}px; top: {{location.y}}px;"
-src="{{author.avatar}}"
-alt="{{заголовок объявления}}"
-*/
-// Функция, передающая в метку необходимые значения 
+// Функция, передающая в метку необходимые данные: 
 var getMapPin = function (similarAd) {
   var pin = pinTemplate.cloneNode(true);
   pin.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
@@ -200,21 +172,18 @@ var getMapPin = function (similarAd) {
   return pin;
 };
 
-// Функция рендера пина
+// Функция рендера меток на карте:
 var renderPins = function (arr) {
-	var fragment = document.createDocumentFragment();
-	for (var i = 0; i < arr.length; i++) {
-		fragment.appendChild(getMapPin(arr[i]));
-	}
-	pinsList.appendChild(fragment);
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < arr.length; i++) {
+  fragment.appendChild(getMapPin(arr[i]));
+  }
+  pinsList.appendChild(fragment);
 }
 
 renderPins(similarAds);
-/*
-4. Отрисуйте сгенерированные DOM-элементы в блок .map__pins. Для вставки 
-элементов используйте DocumentFragment.
-*/
 
+// Функция создания одного из элементов списка фич:
 var createFeature = function (feature) {
   var featureListItem = document.createElement('li');
   featureListItem.classList.add('popup__feature');
@@ -223,6 +192,7 @@ var createFeature = function (feature) {
   return featureListItem;
 }
 
+// Функция, создающая список фич:
 var drawFeaturesList = function (features) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < features.length; i++) {
@@ -231,6 +201,7 @@ var drawFeaturesList = function (features) {
   return fragment;
 }
 
+// Функция создания одной фотографии жилища:
 var createPhoto = function (photoSrc) {
   var photoData = document.createElement('img');
   photoData.classList.add('popup__photo');
@@ -241,43 +212,38 @@ var createPhoto = function (photoSrc) {
   return photoData;
 }
 
+// Функция, создающая комплект фотографий жилья:
 var drawPhotosList = function (photos) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < randomNumberReturn(1, 8); i++) {
+  for (var i = 0; i < randomNumberReturn(0, 8); i++) {
     fragment.appendChild(createPhoto(randomIndexReturn(photos)));
   }
   return fragment;
 }
 
-// Функция создаёт карточку
+debugger;
+
+// Функция создания карточки:
 var createCard = function (ad) {
-	var card = cardTemplate.cloneNode(true);
-	// Выведите заголовок объявления offer.title в заголовок .popup__title.
-	card.querySelector('.popup__title').textContent = ad.offer.title;
-	// Выведите адрес offer.address в блок .popup__text--address.
-	card.querySelector('.popup__text--address').textContent = ad.offer.address;
-	// Выведите цену offer.price в блок .popup__text--price
-	card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
-	// В блок .popup__type выведите тип жилья offer.type
-	card.querySelector('.popup__type').textContent = getCardType(ad.offer.type); 
-	/*Время заезда и выезда offer.checkin и offer.checkout в 
-    блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, 
-	выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд 
-	до 12:00.*/
-	card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-	// В список .popup__features выведите все доступные удобства в объявлении.
-	card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features)); 
-	// В блок .popup__description выведите описание объекта недвижимости offer.description.
-	card.querySelector('.popup__description').textContent = ad.offer.description;
-	/*В блок .popup__photos выведите все фотографии из списка offer.photos. 
-	Каждая из строк массива photos должна записываться как src соответствующего изображения.*/
-	card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos)); 
-	
-	return card;
+  var card = cardTemplate.cloneNode(true);
+  card.querySelector('.popup__title').textContent = ad.offer.title;
+  card.querySelector('.popup__text--address').textContent = ad.offer.address;
+  card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
+  card.querySelector('.popup__type').textContent = getCardType(ad.offer.type); 
+  card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features)); 
+  card.querySelector('.popup__description').textContent = ad.offer.description;
+  card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos)); 
+  return card;
 }
 
+// Функция рендера карточки и постановки её в нужное место:
 var renderCard = function (card) {
-	map.insertBefore(card, map.querySelector('.map__filters-container'));
+  map.insertBefore(card, map.querySelector('.map__filters-container'));
 }
 
+// Убираем класс .map--faded у блока с картой:
+map.classList.remove('.map--faded');
+
+// Рендерим и создаём карточку:
 renderCard(createCard(similarAds[0]));
