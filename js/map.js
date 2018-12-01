@@ -150,7 +150,7 @@ var madeSimilarAds = function (index) {
       // строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
       checkin: randomIndexReturn(TIMES),
       checkout: randomIndexReturn(TIMES), 
-      // массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner",
+      // массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"
       features: featuresList(),
       // пустая строка
       description: '',
@@ -216,9 +216,11 @@ renderPins(similarAds);
 */
 
 var createFeature = function (feature) {
-  var FeatureListItem = document.createElement('li');
-  FeatureListItem.classList.add('popup__feature');
-  return FeatureListItem;
+  var featureListItem = document.createElement('li');
+  featureListItem.classList.add('popup__feature');
+  var featureListItemClass = 'popup__feature--' + feature;
+  featureListItem.classList.add(featureListItemClass);
+  return featureListItem;
 }
 
 var drawFeaturesList = function (features) {
@@ -235,14 +237,14 @@ var createPhoto = function (photoSrc) {
   photoData.width = CARD_PHOTO_WIDTH.toString();
   photoData.height = CARD_PHOTO_HEIGTH.toString();
   photoData.alt = 'Фотография жилища';
-  photoData.src = photoSrc;
+  photoData.src = photoSrc.toString();
   return photoData;
 }
 
 var drawPhotosList = function (photos) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < photos.length; i++) {
-    fragment.appendChild(createFeature(photos[i]));
+  for (var i = 0; i < randomNumberReturn(1, 8); i++) {
+    fragment.appendChild(createPhoto(randomIndexReturn(photos)));
   }
   return fragment;
 }
@@ -269,8 +271,8 @@ var createCard = function (ad) {
 	card.querySelector('.popup__description').textContent = ad.offer.description;
 	/*В блок .popup__photos выведите все фотографии из списка offer.photos. 
 	Каждая из строк массива photos должна записываться как src соответствующего изображения.*/
-	// Что-то по аналогии со списком фич написать
 	card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos)); 
+	
 	return card;
 }
 
