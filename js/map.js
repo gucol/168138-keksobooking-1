@@ -68,11 +68,14 @@ var TYPES = [
 ]
 
 // Нахожу место, куда вставляем элементы
+var map = document.querySelector('.map');
 var pinsList = document.querySelector('.map__pins');
 
 // Нахожу шаблон и разметку для метки и для карточки
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+var 
 
 // Функция, возвращающая случайный элемент массива:
 var randomIndexReturn = function (processedArray) {
@@ -175,7 +178,7 @@ for (var i = 0; i < NUMBER_OF_PINS; i++) {
 
 
 //2. У блока .map уберите класс .map--faded
-document.querySelector('.map').classList.remove('.map--faded');
+map.classList.remove('.map--faded');
 
 /*
 3. На основе данных, созданных в первом пункте, создайте DOM-элементы, 
@@ -202,6 +205,20 @@ var getMapPin = function (similarAd) {
 элементов используйте DocumentFragment.
 */
 
+var createFeature = function (feature) {
+  var FeatureListItem = document.createElement('li');
+  FeatureListItem.classList.add('popup__feature');
+  return FeatureListItem;
+}
+
+var drawFeaturesList = function (features) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < array.length; i++) {
+    fragment.appendChild(createFeature(array[i]));
+  }
+  return fragment;
+}
+
 // Функция создания фрагмента DOM-элементов 'Метка на карте', на основе данных из массива similarAds
 var renderPins = function () {
 	var fragment = document.createDocumentFragment();
@@ -210,42 +227,33 @@ var renderPins = function () {
 	}
 }
 
-/*
-Выведите заголовок объявления offer.title в заголовок .popup__title.
-Выведите адрес offer.address в блок .popup__text--address.
-Выведите цену offer.price в блок .popup__text--price 
-строкой вида {{offer.price}}₽/ночь. Например, 5200₽/ночь.
-В блок .popup__type выведите тип жилья offer.type: 
-Квартира для flat, Бунгало для bungalo, Дом для house, 
-Дворец для palace.
-Выведите количество гостей и комнат offer.rooms и offer.guests 
-в блок .popup__text--capacity строкой вида {{offer.rooms}} 
-комнаты для {{offer.guests}} гостей. Например, 2 комнаты для 3 
-гостей.
-Время заезда и выезда offer.checkin и offer.checkout в 
-блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, 
-выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд 
-до 12:00.
-В список .popup__features выведите все доступные удобства в 
-объявлении.
-В блок .popup__description выведите описание объекта недвижимости 
-offer.description.
-В блок .popup__photos выведите все фотографии из списка 
-offer.photos. Каждая из строк массива photos должна записываться 
-как src соответствующего изображения.
-*/
-
+// Функция создаёт карточку
 var createCard = function (ad) {
 	var card = cardTemplate.cloneNode(true);
+	// Выведите заголовок объявления offer.title в заголовок .popup__title.
 	card.querySelector('.popup__title').textContent = ad.offer.title;
+	// Выведите адрес offer.address в блок .popup__text--address.
 	card.querySelector('.popup__text--address').textContent = ad.offer.address;
+	// Выведите цену offer.price в блок .popup__text--price
 	card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
+	// В блок .popup__type выведите тип жилья offer.type
 	card.querySelector('.popup__type').textContent = getCardType(ad.offer.type); 
-	//
+	/*Время заезда и выезда offer.checkin и offer.checkout в 
+    блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, 
+	выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд 
+	до 12:00.*/
 	card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-	// card.querySelector('.popup__feature').classList = drawElementFeatures(similarAd); как-то так
+	// В список .popup__features выведите все доступные удобства в объявлении.
+	card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features)); 
+	// В блок .popup__description выведите описание объекта недвижимости offer.description.
 	card.querySelector('.popup__description').textContent = ad.offer.description;
+	/*В блок .popup__photos выведите все фотографии из списка offer.photos. 
+	Каждая из строк массива photos должна записываться как src соответствующего изображения.*/
 	// card.querySelector('.popup__photos') дописать
 	return card;
+}
+
+var renderCard = function (card) {
+	map.insertBefore(card, map.querySelector('.map__filters-container'));
 }
 
