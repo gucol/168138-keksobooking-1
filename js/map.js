@@ -200,6 +200,15 @@ var getMapPin = function (similarAd) {
   return pin;
 };
 
+// Функция рендера пина
+var renderPins = function () {
+	var fragment = document.createDocumentFragment();
+	for (var i = 0; i < similarAds.length; i++) {
+		fragment.appendChild(getMapPin(similarAds[i]));
+	}
+	pinsList.appendChild(fragment);
+}
+
 /*
 4. Отрисуйте сгенерированные DOM-элементы в блок .map__pins. Для вставки 
 элементов используйте DocumentFragment.
@@ -219,13 +228,6 @@ var drawFeaturesList = function (features) {
   return fragment;
 }
 
-// Функция создания фрагмента DOM-элементов 'Метка на карте', на основе данных из массива similarAds
-var renderPins = function () {
-	var fragment = document.createDocumentFragment();
-	for (var i = 0; i < similarAds.length; i++) {
-
-	}
-}
 
 // Функция создаёт карточку
 var createCard = function (ad) {
@@ -249,7 +251,8 @@ var createCard = function (ad) {
 	card.querySelector('.popup__description').textContent = ad.offer.description;
 	/*В блок .popup__photos выведите все фотографии из списка offer.photos. 
 	Каждая из строк массива photos должна записываться как src соответствующего изображения.*/
-	// card.querySelector('.popup__photos') дописать
+	// Что-то по аналогии со списком фич написать
+	card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos)); 
 	return card;
 }
 
