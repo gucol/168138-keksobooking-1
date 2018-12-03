@@ -242,7 +242,7 @@ var renderCard = function (card) {
 };
 
 // Убираем класс .map--faded у блока с картой:
-map.classList.remove('.map--faded');
+map.classList.remove('map--faded');
 
 // Рендерим и создаём карточку:
 renderCard(createCard(similarAds[0]));
