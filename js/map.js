@@ -134,7 +134,7 @@ var madeSimilarAds = function (index) {
     },
 
     offer: {
-      title: randomIndexReturn(TITLES[index]),
+      title: TITLES[index],
       address: location.x + ', ' + location.y,
       price: randomNumberReturn(MIN_PRICE, MAX_PRICE),
       type: randomIndexReturn(TYPES),
