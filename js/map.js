@@ -101,25 +101,13 @@ var shuffle = function (sortedArray) {
   return sortedArray;
 };
 
-// Функция, переводящая данные из type на русский язык:
-var getCardType = function (type) {
-  var translateType = 'Абы что';
-  switch (type) {
-    case 'flat':
-      translateType = 'Квартира';
-      break;
-    case 'bungalo':
-      translateType = 'Бунгало';
-      break;
-    case 'house':
-      translateType = 'Дом';
-      break;
-    case 'palace':
-      translateType = 'Дворец';
-      break;
-  }
-  return translateType;
-};
+// Объект, переводящий данные из type на русский язык:
+var houseType = {
+  flat: 'Квартира',
+  bungalo: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец'
+}
 
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
 var madeSimilarAds = function (index) {
@@ -216,8 +204,9 @@ var createPhoto = function (photoSrc) {
 // Функция, создающая комплект фотографий жилья:
 var drawPhotosList = function (photos) {
   var fragment = document.createDocumentFragment();
-  for (var z = 0; z < randomNumberReturn(0, 8); z++) {
-    fragment.appendChild(createPhoto(randomIndexReturn(photos)));
+  var mixedArray = shuffle(photos);
+  for (var z = 0; z < photos.length; z++) {
+    fragment.appendChild(createPhoto(mixedArray[z]));
   }
   return fragment;
 };
@@ -228,7 +217,7 @@ var createCard = function (ad) {
   card.querySelector('.popup__title').textContent = ad.offer.title;
   card.querySelector('.popup__text--address').textContent = ad.offer.address;
   card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
-  card.querySelector('.popup__type').textContent = getCardType(ad.offer.type);
+  card.querySelector('.popup__type').textContent = houseType[ad.offer.type];
   card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features));
   card.querySelector('.popup__description').textContent = ad.offer.description;
