@@ -230,8 +230,53 @@ var renderCard = function (card) {
   map.insertBefore(card, map.querySelector('.map__filters-container'));
 };
 
-// Убираем класс .map--faded у блока с картой:
-map.classList.remove('map--faded');
-
 // Рендерим и создаём карточку:
 renderCard(createCard(similarAds[0]));
+
+
+var adForm = document.querySelector('.ad-form');
+var mapFilter = document.querySelector('.map__filters');
+/**/
+var toggleMapStatus = function () {
+  map.classList.toggle('map--faded');
+};
+
+var toggleFormStatus = function (form) {
+  var formInputs = form.querySelectorAll('input');
+  var formSelects = form.querySelectorAll('select');
+  var disabledClass = form.name + '--disabled';
+  form.classList.toggle(disabledClass);
+  if (formInputs[0].getAttribute(disabled)) {
+    for (var i = 0; i < formInputs.length; i++) {
+      formInputs[i].disabled = false;
+    }
+    for (var i = 0; i < formSelects.length; i++) {
+      formSelects[i].disabled = false;
+    }
+  }
+};
+
+/* Функция, которая отменяет изменения DOM-элементов, описанные в пункте 
+«Неактивное состояние» технического задания. */
+var mapPinMouseupHandler = function () {
+  // 1. Блок с картой .map содержит класс map--faded;
+  toggleMapStatus();
+  // 2. Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled; .map__filters аналогично
+  toggleFormStatus(adForm);
+  toggleFormStatus(mapFilter);
+};
+/*
+Изменения DOM-элементов, описанные в пункте «Неактивное состояние» ТЗ:
+1. Блок с картой .map содержит класс map--faded;
+2. Форма заполнения информации об объявлении .ad-form содержит класс 
+ad-form--disabled;
+3. Все <input> и <select> формы .ad-form заблокированы с помощью атрибута 
+disabled, добавленного на них или на их родительские блоки fieldset.
+4. Форма с фильтрами .map__filters заблокирована так же, как и форма .ad-form.
+*/
+/* Нужно добавить обработчик события mouseup на элемент .map__pin--main.
+Обработчик события mouseup должен вызывать функцию, которая будет отменять 
+изменения DOM-элементов, описанные в пункте «Неактивное состояние» 
+технического задания. */
+var mapPin = document.querySelector('.map__pin--main');
+mapPin.addEventListener('mouseup', mapPinMouseupHandler);
