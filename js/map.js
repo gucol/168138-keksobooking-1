@@ -231,17 +231,11 @@ var renderCard = function (card) {
   map.insertBefore(card, map.querySelector('.map__filters-container'));
 };
 
-// Рендер меток на основе восьми случайно сгенерированных комплектов данных:
-renderPins(similarAds);
-
-// Рендерим и создаём карточку:
-renderCard(createCard(similarAds[0]));
-
-
 
 
 // #16 Личный проект: подробности
 var centerPin = document.querySelector('.map__pin--main');
+var enotherPins = document.querySelectorAll('.map__pin');
 var adForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters');
 var addressInput = document.querySelector('#address');
@@ -257,7 +251,8 @@ addressInput.placeholder = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.
 
 // Функция, переключающая наложение на карту между активным и неактивным состоянием:
 var toggleMapStatus = function () {
-  map.classList.toggle('map--faded');
+  // Попытка добавить map--faded к карте в неактивном состоянии и убрать его в активном:
+  map.classList.toggle('.map--faded');
 };
 
 // Функция, переключающая атрибут disabled у <input> и <select> в формах:
@@ -266,7 +261,7 @@ var toggleFormStatus = function (form) {
   var formSelects = form.querySelectorAll('select');
   var disabledClass = form.name + '--disabled';
   form.classList.toggle(disabledClass);
-  if (formInputs[0].getAttribute(disabled)) {
+  if (formInputs[0].getAttribute('disabled')) {
     for (var i = 0; i < formInputs.length; i++) {
       formInputs[i].disabled = false;
     }
@@ -294,15 +289,20 @@ var mapPinMouseupHandler = function () {
   вызова метода, переводящего страницу в активное состояние, должен находиться вызов метода, который устанавливает 
   значения поля ввода адреса. */
   setsAddressValue();
+  // Рендер меток на основе восьми случайно сгенерированных комплектов данных:
   renderPins(similarAds);
-  centerPin.removeEventListener('mouseup', mapPinMouseupHandler);
+  // Рендерим и создаём карточку:
+  renderCard(createCard(similarAds[0]));
+  // Попытка убрать карточку в неактивном состоянии и добавить в активном:
+  cardTemplate.classList.toggle('.visually-hidden');
+  pinsList.classList.toggle('.visually-hidden');
 };
 
 /* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять 
 изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
 centerPin.addEventListener('mouseup', mapPinMouseupHandler);
 
-/*Заполнение поля адреса
+/* Заполнение поля адреса
 Ещё один момент заключается в том, что поле адреса должно быть заполнено всегда, в том числе сразу после открытия страницы. 
 Насчёт определения координат метки в этом случае нет никаких инструкций, ведь в неактивном режиме страницы метка круглая, 
 поэтому мы можем взять за исходное значение поля адреса середину метки. А при «перетаскивании» значение поля изменится на то, 
@@ -311,4 +311,5 @@ centerPin.addEventListener('mouseup', mapPinMouseupHandler);
 Для определения смещения координаты относительно левого верхнего угла метки можно использовать любой способ, в том числе, 
 вычисление размеров метки. Кроме этого, можно хранить размеры метки как константу.*/
 
-
+// Тут попытка описать примерно следующее: при клике на один из пинов рендерить карточку с соответствующими данными:
+enotherPins.addEventListener('click', renderCard(createCard(similarAds[0])));
