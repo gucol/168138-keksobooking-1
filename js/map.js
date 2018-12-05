@@ -144,7 +144,7 @@ var madeSimilarAds = function (index) {
   return similarAd;
 };
 
-// Создание массива из восьми меток:
+// Создание массива из восьми случайно сгенерированных комплектов данных для меток:
 var similarAds = [];
 
 for (var i = 0; i < NUMBER_OF_PINS; i++) {
@@ -170,6 +170,7 @@ var renderPins = function (arr) {
   pinsList.appendChild(fragment);
 };
 
+// Рендер меток на основе восьми случайно сгенерированных комплектов данных:
 renderPins(similarAds);
 
 // Функция создания одного из элементов списка фич:
@@ -230,17 +231,36 @@ var renderCard = function (card) {
   map.insertBefore(card, map.querySelector('.map__filters-container'));
 };
 
+// Рендер меток на основе восьми случайно сгенерированных комплектов данных:
+renderPins(similarAds);
+
 // Рендерим и создаём карточку:
 renderCard(createCard(similarAds[0]));
 
 
+
+
+// #16 Личный проект: подробности
+var centerPin = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters');
-/**/
+var addressInput = document.querySelector('#address');
+
+// Координаты главной метки:
+var centerPinCenterCoord = {
+  x: parseInt(centerPin.style.left) + PIN_WIDTH / 2,
+  y: parseInt(centerPin.style.top) + PIN_HEIGHT / 2
+}
+
+// Ввод изначальных координат метки в форму:
+addressInput.placeholder = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
+
+// Функция, переключающая наложение на карту между активным и неактивным состоянием:
 var toggleMapStatus = function () {
   map.classList.toggle('map--faded');
 };
 
+// Функция, переключающая атрибут disabled у <input> и <select> в формах:
 var toggleFormStatus = function (form) {
   var formInputs = form.querySelectorAll('input');
   var formSelects = form.querySelectorAll('select');
@@ -256,27 +276,39 @@ var toggleFormStatus = function (form) {
   }
 };
 
+// Метод, который устанавливает значения поля ввода адреса:
+var setsAddressValue = function () {
+  
+};
+
 /* Функция, которая отменяет изменения DOM-элементов, описанные в пункте 
-«Неактивное состояние» технического задания. */
+«Неактивное состояние» технического задания и вносит координаты в поле адреса при движении метки */
 var mapPinMouseupHandler = function () {
   // 1. Блок с картой .map содержит класс map--faded;
   toggleMapStatus();
   // 2. Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled; .map__filters аналогично
   toggleFormStatus(adForm);
   toggleFormStatus(mapFilter);
+  /* Кроме активации формы, перемещение метки приводит к заполнению поля адреса. В значении поля записаны координаты, 
+  на которые метка указывает своим острым концом. Поэтому в обработчике события mouseup на элементе метки, кроме 
+  вызова метода, переводящего страницу в активное состояние, должен находиться вызов метода, который устанавливает 
+  значения поля ввода адреса. */
+  setsAddressValue();
+  renderPins(similarAds);
+  centerPin.removeEventListener('mouseup', mapPinMouseupHandler);
 };
-/*
-Изменения DOM-элементов, описанные в пункте «Неактивное состояние» ТЗ:
-1. Блок с картой .map содержит класс map--faded;
-2. Форма заполнения информации об объявлении .ad-form содержит класс 
-ad-form--disabled;
-3. Все <input> и <select> формы .ad-form заблокированы с помощью атрибута 
-disabled, добавленного на них или на их родительские блоки fieldset.
-4. Форма с фильтрами .map__filters заблокирована так же, как и форма .ad-form.
-*/
-/* Нужно добавить обработчик события mouseup на элемент .map__pin--main.
-Обработчик события mouseup должен вызывать функцию, которая будет отменять 
-изменения DOM-элементов, описанные в пункте «Неактивное состояние» 
-технического задания. */
-var mapPin = document.querySelector('.map__pin--main');
-mapPin.addEventListener('mouseup', mapPinMouseupHandler);
+
+/* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять 
+изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
+centerPin.addEventListener('mouseup', mapPinMouseupHandler);
+
+/*Заполнение поля адреса
+Ещё один момент заключается в том, что поле адреса должно быть заполнено всегда, в том числе сразу после открытия страницы. 
+Насчёт определения координат метки в этом случае нет никаких инструкций, ведь в неактивном режиме страницы метка круглая, 
+поэтому мы можем взять за исходное значение поля адреса середину метки. А при «перетаскивании» значение поля изменится на то, 
+на которое будет указывать острый конец метки.
+
+Для определения смещения координаты относительно левого верхнего угла метки можно использовать любой способ, в том числе, 
+вычисление размеров метки. Кроме этого, можно хранить размеры метки как константу.*/
+
+
