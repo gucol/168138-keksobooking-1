@@ -170,9 +170,6 @@ var renderPins = function (arr) {
   pinsList.appendChild(fragment);
 };
 
-// Рендер меток на основе восьми случайно сгенерированных комплектов данных:
-renderPins(similarAds);
-
 // Функция создания одного из элементов списка фич:
 var createFeature = function (feature) {
   var featureListItem = document.createElement('li');
@@ -235,7 +232,7 @@ var renderCard = function (card) {
 
 // #16 Личный проект: подробности
 var centerPin = document.querySelector('.map__pin--main');
-var enotherPins = document.querySelectorAll('.map__pin');
+var anotherPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 var adForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters');
 var addressInput = document.querySelector('#address');
@@ -249,18 +246,11 @@ var centerPinCenterCoord = {
 // Ввод изначальных координат метки в форму:
 addressInput.placeholder = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
 
-// Функция, переключающая наложение на карту между активным и неактивным состоянием:
-var toggleMapStatus = function () {
-  // Попытка добавить map--faded к карте в неактивном состоянии и убрать его в активном:
-  map.classList.toggle('.map--faded');
-};
 
 // Функция, переключающая атрибут disabled у <input> и <select> в формах:
 var toggleFormStatus = function (form) {
   var formInputs = form.querySelectorAll('input');
   var formSelects = form.querySelectorAll('select');
-  var disabledClass = form.name + '--disabled';
-  form.classList.toggle(disabledClass);
   if (formInputs[0].getAttribute('disabled')) {
     for (var i = 0; i < formInputs.length; i++) {
       formInputs[i].disabled = false;
@@ -280,7 +270,8 @@ var setsAddressValue = function () {
 «Неактивное состояние» технического задания и вносит координаты в поле адреса при движении метки */
 var mapPinMouseupHandler = function () {
   // 1. Блок с картой .map содержит класс map--faded;
-  toggleMapStatus();
+  map.classList.remove('map--faded');
+  adForm.classList.toggle('.ad-form--disabled');
   // 2. Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled; .map__filters аналогично
   toggleFormStatus(adForm);
   toggleFormStatus(mapFilter);
@@ -291,11 +282,6 @@ var mapPinMouseupHandler = function () {
   setsAddressValue();
   // Рендер меток на основе восьми случайно сгенерированных комплектов данных:
   renderPins(similarAds);
-  // Рендерим и создаём карточку:
-  renderCard(createCard(similarAds[0]));
-  // Попытка убрать карточку в неактивном состоянии и добавить в активном:
-  cardTemplate.classList.toggle('.visually-hidden');
-  pinsList.classList.toggle('.visually-hidden');
 };
 
 /* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять 
@@ -312,4 +298,8 @@ centerPin.addEventListener('mouseup', mapPinMouseupHandler);
 вычисление размеров метки. Кроме этого, можно хранить размеры метки как константу.*/
 
 // Тут попытка описать примерно следующее: при клике на один из пинов рендерить карточку с соответствующими данными:
-enotherPins.addEventListener('click', renderCard(createCard(similarAds[0])));
+for (var k = 0; k < anotherPins.length; k++) {
+  anotherPins[k].addEventListener('click', function(){
+    renderCard(createCard(similarAds[0]));
+  });
+}
