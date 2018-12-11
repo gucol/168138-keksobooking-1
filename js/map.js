@@ -75,6 +75,11 @@ var map = document.querySelector('.map');
 var pinsList = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var centerPin = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var mapFilter = document.querySelector('.map__filters');
+var addressInput = document.querySelector('#address');
+var ESC_KEYCODE = 27;
 
 // Функция, возвращающая случайный элемент массива:
 var randomIndexReturn = function (processedArray) {
@@ -144,9 +149,7 @@ var madeSimilarAds = function (index) {
   return similarAd;
 };
 
-// Создание массива из восьми случайно сгенерированных комплектов данных для меток:
 var similarAds = [];
-
 for (var i = 0; i < NUMBER_OF_PINS; i++) {
   similarAds.push(madeSimilarAds(i));
 }
@@ -163,7 +166,6 @@ var createPin = function (similarAd, callback) {
     // Про callback: https://ru.hexlet.io/blog/posts/javascript-what-the-heck-is-a-callback
     callback(evt);
   });
-
   return pin;
 };
 
@@ -237,7 +239,6 @@ var deleteCard = function () {
   map.removeChild(map.querySelector('.map__card'));
 };
 
-// Функция создания карточки:
 var createCard = function (ad) {
   var card = cardTemplate.cloneNode(true);
   card.querySelector('.popup__title').textContent = ad.offer.title;
@@ -260,22 +261,6 @@ window.addEventListener('keydown', function (evt) {
   }
 });
 
-// Функция рендера карточки и постановки её в нужное место:
-/* var renderCard = function (card) {
-  map.insertBefore(card, map.querySelector('.map__filters-container'));
-};*/
-
-// #16 Личный проект: подробности
-var centerPin = document.querySelector('.map__pin--main');
-// var anotherPins = document.querySelectorAll('.map__pin');
-// var anotherPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-var adForm = document.querySelector('.ad-form');
-var mapFilter = document.querySelector('.map__filters');
-var addressInput = document.querySelector('#address');
-
-var ESC_KEYCODE = 27;
-
-
 // Функция, переключающая атрибут disabled у <input> и <select> в формах:
 var toggleFormStatus = function (form) {
   var formInputs = form.querySelectorAll('input');
@@ -292,23 +277,17 @@ var toggleFormStatus = function (form) {
 
 // Метод, который устанавливает значения поля ввода адреса:
 var setsAddressValue = function () {
-  // Координаты главной метки:
   var centerPinCenterCoord = {
     x: parseInt(centerPin.style.left, 10) + PIN_WIDTH / 2,
     y: parseInt(centerPin.style.top, 10) + PIN_HEIGHT / 2
   };
 
-  // Ввод изначальных координат метки в форму:
   addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
 };
 
-/* Функция, которая отменяет изменения DOM-элементов, описанные в пункте
-«Неактивное состояние» технического задания и вносит координаты в поле адреса при движении метки */
 var mapPinMouseupHandler = function () {
-  // 1. Блок с картой .map содержит класс map--faded;
   map.classList.remove('map--faded');
   adForm.classList.toggle('ad-form--disabled');
-  // 2. Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled; .map__filters аналогично
   toggleFormStatus(adForm);
   toggleFormStatus(mapFilter);
   setsAddressValue();
@@ -318,14 +297,3 @@ var mapPinMouseupHandler = function () {
 /* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять
 изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
 centerPin.addEventListener('mouseup', mapPinMouseupHandler);
-
-/* Заполнение поля адреса
-Ещё один момент заключается в том, что поле адреса должно быть заполнено всегда, в том числе сразу после открытия страницы.
-Насчёт определения координат метки в этом случае нет никаких инструкций, ведь в неактивном режиме страницы метка круглая,
-поэтому мы можем взять за исходное значение поля адреса середину метки. А при «перетаскивании» значение поля изменится на то,
-на которое будет указывать острый конец метки.
-
-Для определения смещения координаты относительно левого верхнего угла метки можно использовать любой способ, в том числе,
-вычисление размеров метки. Кроме этого, можно хранить размеры метки как константу.*/
-
-
