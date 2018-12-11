@@ -107,7 +107,7 @@ var houseType = {
   bungalo: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец'
-}
+};
 
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
 var madeSimilarAds = function (index) {
@@ -182,8 +182,8 @@ var showCard = function (cardElement) {
 // Функция рендера меток на карте:
 var renderPins = function (dataArray) {
   var fragment = document.createDocumentFragment();
-  
-  dataArray.forEach (function (ElemetOfArray) {
+
+  dataArray.forEach(function (ElemetOfArray) {
     var newPin = createPin(ElemetOfArray, function () {
       removeExistingPopup();
       var card = createCard(ElemetOfArray);
@@ -261,13 +261,13 @@ window.addEventListener('keydown', function (evt) {
 });
 
 // Функция рендера карточки и постановки её в нужное место:
-var renderCard = function (card) {
+/* var renderCard = function (card) {
   map.insertBefore(card, map.querySelector('.map__filters-container'));
-};
+};*/
 
 // #16 Личный проект: подробности
 var centerPin = document.querySelector('.map__pin--main');
-var anotherPins = document.querySelectorAll('.map__pin');
+// var anotherPins = document.querySelectorAll('.map__pin');
 // var anotherPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 var adForm = document.querySelector('.ad-form');
 var mapFilter = document.querySelector('.map__filters');
@@ -281,10 +281,10 @@ var toggleFormStatus = function (form) {
   var formInputs = form.querySelectorAll('input');
   var formSelects = form.querySelectorAll('select');
   if (formInputs[0].getAttribute('disabled')) {
-    for (var i = 0; i < formInputs.length; i++) {
+    for (var e = 0; e < formInputs.length; e++) {
       formInputs[i].disabled = false;
     }
-    for (var i = 0; i < formSelects.length; i++) {
+    for (var u = 0; u < formSelects.length; u++) {
       formSelects[i].disabled = false;
     }
   }
@@ -294,15 +294,15 @@ var toggleFormStatus = function (form) {
 var setsAddressValue = function () {
   // Координаты главной метки:
   var centerPinCenterCoord = {
-    x: parseInt(centerPin.style.left) + PIN_WIDTH / 2,
-    y: parseInt(centerPin.style.top) + PIN_HEIGHT / 2
-  }
+    x: parseInt(centerPin.style.left, 10) + PIN_WIDTH / 2,
+    y: parseInt(centerPin.style.top, 10) + PIN_HEIGHT / 2
+  };
 
   // Ввод изначальных координат метки в форму:
   addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
 };
 
-/* Функция, которая отменяет изменения DOM-элементов, описанные в пункте 
+/* Функция, которая отменяет изменения DOM-элементов, описанные в пункте
 «Неактивное состояние» технического задания и вносит координаты в поле адреса при движении метки */
 var mapPinMouseupHandler = function () {
   // 1. Блок с картой .map содержит класс map--faded;
@@ -315,17 +315,17 @@ var mapPinMouseupHandler = function () {
   renderPins(similarAds);
 };
 
-/* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять 
+/* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять
 изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
 centerPin.addEventListener('mouseup', mapPinMouseupHandler);
 
 /* Заполнение поля адреса
-Ещё один момент заключается в том, что поле адреса должно быть заполнено всегда, в том числе сразу после открытия страницы. 
-Насчёт определения координат метки в этом случае нет никаких инструкций, ведь в неактивном режиме страницы метка круглая, 
-поэтому мы можем взять за исходное значение поля адреса середину метки. А при «перетаскивании» значение поля изменится на то, 
+Ещё один момент заключается в том, что поле адреса должно быть заполнено всегда, в том числе сразу после открытия страницы.
+Насчёт определения координат метки в этом случае нет никаких инструкций, ведь в неактивном режиме страницы метка круглая,
+поэтому мы можем взять за исходное значение поля адреса середину метки. А при «перетаскивании» значение поля изменится на то,
 на которое будет указывать острый конец метки.
 
-Для определения смещения координаты относительно левого верхнего угла метки можно использовать любой способ, в том числе, 
+Для определения смещения координаты относительно левого верхнего угла метки можно использовать любой способ, в том числе,
 вычисление размеров метки. Кроме этого, можно хранить размеры метки как константу.*/
 
 
