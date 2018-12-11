@@ -233,6 +233,10 @@ var drawPhotosList = function (photos) {
   return fragment;
 };
 
+var deleteCard = function () {
+  map.removeChild(map.querySelector('.map__card'));
+};
+
 // Функция создания карточки:
 var createCard = function (ad) {
   var card = cardTemplate.cloneNode(true);
@@ -244,8 +248,17 @@ var createCard = function (ad) {
   card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features));
   card.querySelector('.popup__description').textContent = ad.offer.description;
   card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos));
+  card.querySelector('.popup__close').addEventListener('click', deleteCard);
   return card;
 };
+
+window.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    if (map.querySelector('.map__card') !== null) {
+      deleteCard();
+    }
+  }
+});
 
 // Функция рендера карточки и постановки её в нужное место:
 var renderCard = function (card) {
@@ -315,15 +328,4 @@ centerPin.addEventListener('mouseup', mapPinMouseupHandler);
 Для определения смещения координаты относительно левого верхнего угла метки можно использовать любой способ, в том числе, 
 вычисление размеров метки. Кроме этого, можно хранить размеры метки как константу.*/
 
-// Тут попытка описать примерно следующее: при клике на один из пинов рендерить карточку с соответствующими данными:
-for (var k = 0; k < anotherPins.length; k++) {
-  anotherPins[k].addEventListener('click', function () {
-  renderCard(createCard(similarAds[k]));
-});
-}
-
-/*var closeCard = function () {
-  если нажали на крестик
-  если нажали на ESC то удалить карточку из дом
-}*/
 
