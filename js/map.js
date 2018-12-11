@@ -152,21 +152,45 @@ for (var i = 0; i < NUMBER_OF_PINS; i++) {
 }
 
 // Функция, передающая в метку необходимые данные:
-var getMapPin = function (similarAd) {
+var createPin = function (similarAd, callback) {
   var pin = pinTemplate.cloneNode(true);
   pin.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
   pin.style.top = similarAd.location.y - PIN_HEIGHT + 'px';
   pin.querySelector('img').src = similarAd.author.avatar;
   pin.querySelector('img').alt = similarAd.offer.title;
+
+  pin.addEventListener('click', function (evt) {
+    // Про callback: https://ru.hexlet.io/blog/posts/javascript-what-the-heck-is-a-callback
+    callback(evt);
+  });
+
   return pin;
 };
 
-// Функция рендера меток на карте:
-var renderPins = function (arr) {
-  var fragment = document.createDocumentFragment();
-  for (var x = 0; x < arr.length; x++) {
-    fragment.appendChild(getMapPin(arr[x]));
+// Функция находит на карте карточку. Если есть — удаляет:
+var removeExistingPopup = function () {
+  var oldCard = map.querySelector('.map__card');
+  if (oldCard) {
+    oldCard.remove();
   }
+};
+
+var showCard = function (cardElement) {
+  map.insertBefore(cardElement, map.querySelector('.map__filters-container'));
+};
+
+// Функция рендера меток на карте:
+var renderPins = function (dataArray) {
+  var fragment = document.createDocumentFragment();
+  
+  dataArray.forEach (function (ElemetOfArray) {
+    var newPin = createPin(ElemetOfArray, function () {
+      removeExistingPopup();
+      var card = createCard(ElemetOfArray);
+      showCard(card);
+    });
+    fragment.appendChild(newPin);
+  });
   pinsList.appendChild(fragment);
 };
 
@@ -274,12 +298,7 @@ var mapPinMouseupHandler = function () {
   // 2. Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled; .map__filters аналогично
   toggleFormStatus(adForm);
   toggleFormStatus(mapFilter);
-  /* Кроме активации формы, перемещение метки приводит к заполнению поля адреса. В значении поля записаны координаты, 
-  на которые метка указывает своим острым концом. Поэтому в обработчике события mouseup на элементе метки, кроме 
-  вызова метода, переводящего страницу в активное состояние, должен находиться вызов метода, который устанавливает 
-  значения поля ввода адреса. */
   setsAddressValue();
-  // Рендер меток на основе восьми случайно сгенерированных комплектов данных:
   renderPins(similarAds);
 };
 
