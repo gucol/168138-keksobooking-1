@@ -75,6 +75,11 @@ var map = document.querySelector('.map');
 var pinsList = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var centerPin = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var mapFilter = document.querySelector('.map__filters');
+var addressInput = document.querySelector('#address');
+var ESC_KEYCODE = 27;
 
 // Функция, возвращающая случайный элемент массива:
 var randomIndexReturn = function (processedArray) {
@@ -101,24 +106,12 @@ var shuffle = function (sortedArray) {
   return sortedArray;
 };
 
-// Функция, переводящая данные из type на русский язык:
-var getCardType = function (type) {
-  var translateType = 'Абы что';
-  switch (type) {
-    case 'flat':
-      translateType = 'Квартира';
-      break;
-    case 'bungalo':
-      translateType = 'Бунгало';
-      break;
-    case 'house':
-      translateType = 'Дом';
-      break;
-    case 'palace':
-      translateType = 'Дворец';
-      break;
-  }
-  return translateType;
+// Объект, переводящий данные из type на русский язык:
+var houseType = {
+  flat: 'Квартира',
+  bungalo: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец'
 };
 
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
@@ -156,33 +149,52 @@ var madeSimilarAds = function (index) {
   return similarAd;
 };
 
-// Создание массива из восьми меток:
 var similarAds = [];
-
 for (var i = 0; i < NUMBER_OF_PINS; i++) {
   similarAds.push(madeSimilarAds(i));
 }
 
 // Функция, передающая в метку необходимые данные:
-var getMapPin = function (similarAd) {
+var createPin = function (similarAd, callback) {
   var pin = pinTemplate.cloneNode(true);
   pin.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
   pin.style.top = similarAd.location.y - PIN_HEIGHT + 'px';
   pin.querySelector('img').src = similarAd.author.avatar;
   pin.querySelector('img').alt = similarAd.offer.title;
+
+  pin.addEventListener('click', function (evt) {
+    // Про callback: https://ru.hexlet.io/blog/posts/javascript-what-the-heck-is-a-callback
+    callback(evt);
+  });
   return pin;
 };
 
-// Функция рендера меток на карте:
-var renderPins = function (arr) {
-  var fragment = document.createDocumentFragment();
-  for (var x = 0; x < arr.length; x++) {
-    fragment.appendChild(getMapPin(arr[x]));
+// Функция находит на карте карточку. Если есть — удаляет:
+var removeExistingPopup = function () {
+  var oldCard = map.querySelector('.map__card');
+  if (oldCard) {
+    oldCard.remove();
   }
-  pinsList.appendChild(fragment);
 };
 
-renderPins(similarAds);
+var showCard = function (cardElement) {
+  map.insertBefore(cardElement, map.querySelector('.map__filters-container'));
+};
+
+// Функция рендера меток на карте:
+var renderPins = function (dataArray) {
+  var fragment = document.createDocumentFragment();
+
+  dataArray.forEach(function (ElemetOfArray) {
+    var newPin = createPin(ElemetOfArray, function () {
+      removeExistingPopup();
+      var card = createCard(ElemetOfArray);
+      showCard(card);
+    });
+    fragment.appendChild(newPin);
+  });
+  pinsList.appendChild(fragment);
+};
 
 // Функция создания одного из элементов списка фич:
 var createFeature = function (feature) {
@@ -216,33 +228,72 @@ var createPhoto = function (photoSrc) {
 // Функция, создающая комплект фотографий жилья:
 var drawPhotosList = function (photos) {
   var fragment = document.createDocumentFragment();
-  for (var z = 0; z < randomNumberReturn(0, 8); z++) {
-    fragment.appendChild(createPhoto(randomIndexReturn(photos)));
+  var mixedArray = shuffle(photos);
+  for (var z = 0; z < photos.length; z++) {
+    fragment.appendChild(createPhoto(mixedArray[z]));
   }
   return fragment;
 };
 
-// Функция создания карточки:
+var deleteCard = function () {
+  map.removeChild(map.querySelector('.map__card'));
+};
+
 var createCard = function (ad) {
   var card = cardTemplate.cloneNode(true);
   card.querySelector('.popup__title').textContent = ad.offer.title;
   card.querySelector('.popup__text--address').textContent = ad.offer.address;
   card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
-  card.querySelector('.popup__type').textContent = getCardType(ad.offer.type);
+  card.querySelector('.popup__type').textContent = houseType[ad.offer.type];
   card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features));
   card.querySelector('.popup__description').textContent = ad.offer.description;
   card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos));
+  card.querySelector('.popup__close').addEventListener('click', deleteCard);
   return card;
 };
 
-// Функция рендера карточки и постановки её в нужное место:
-var renderCard = function (card) {
-  map.insertBefore(card, map.querySelector('.map__filters-container'));
+window.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    if (map.querySelector('.map__card') !== null) {
+      deleteCard();
+    }
+  }
+});
+
+// Функция, переключающая атрибут disabled у <input> и <select> в формах:
+var toggleFormStatus = function (form) {
+  var formInputs = form.querySelectorAll('input');
+  var formSelects = form.querySelectorAll('select');
+  if (formInputs[0].getAttribute('disabled')) {
+    for (var e = 0; e < formInputs.length; e++) {
+      formInputs[i].disabled = false;
+    }
+    for (var u = 0; u < formSelects.length; u++) {
+      formSelects[i].disabled = false;
+    }
+  }
 };
 
-// Убираем класс .map--faded у блока с картой:
-map.classList.remove('map--faded');
+// Метод, который устанавливает значения поля ввода адреса:
+var setsAddressValue = function () {
+  var centerPinCenterCoord = {
+    x: parseInt(centerPin.style.left, 10) + PIN_WIDTH / 2,
+    y: parseInt(centerPin.style.top, 10) + PIN_HEIGHT / 2
+  };
 
-// Рендерим и создаём карточку:
-renderCard(createCard(similarAds[0]));
+  addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
+};
+
+var mapPinMouseupHandler = function () {
+  map.classList.remove('map--faded');
+  adForm.classList.toggle('ad-form--disabled');
+  toggleFormStatus(adForm);
+  toggleFormStatus(mapFilter);
+  setsAddressValue();
+  renderPins(similarAds);
+};
+
+/* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять
+изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
+centerPin.addEventListener('mouseup', mapPinMouseupHandler);
