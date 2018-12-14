@@ -1,9 +1,5 @@
 'use strict';
 
-var MIN_COORDINATE_X = 0;
-var MAX_COORDINATE_X = 1200;
-var MIN_COORDINATE_Y = 130;
-var MAX_COORDINATE_Y = 630;
 var MIN_PRICE = 1000;
 var MAX_PRICE = 1000000;
 var MIN_ROOMS = 1;
@@ -15,6 +11,10 @@ var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var CARD_PHOTO_WIDTH = 45;
 var CARD_PHOTO_HEIGTH = 40;
+var MIN_COORDINATE_X = 0;
+var MAX_COORDINATE_X = document.querySelector('.map').offsetWidth - PIN_WIDTH;
+var MIN_COORDINATE_Y = 130;
+var MAX_COORDINATE_Y = 630;
 
 // Массив значений для ключа title:
 var TITLES = [
@@ -287,10 +287,9 @@ var setsAddressValue = function () {
 
 var mapPinMouseupHandler = function () {
   map.classList.remove('map--faded');
-  adForm.classList.toggle('ad-form--disabled');
+  adForm.classList.remove('ad-form--disabled');
   toggleFormStatus(adForm);
   toggleFormStatus(mapFilter);
-  // setsAddressValue();
   renderPins(similarAds);
 };
 
@@ -336,34 +335,38 @@ centerPin.addEventListener('mousedown', function (evt) {
     y: evt.clientY
   };
 
-  // Метка не перемещалась:
-  var dragged = false;
-
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    dragged = true;
 
     var shift = {
       x: startCoords.x - moveEvt.clientX,
       y: startCoords.y - moveEvt.clientY
-    }
+    };
 
     startCoords = {
       x: moveEvt.clientX,
       y: moveEvt.clientY
     };
 
-    centerPin.style.top = (centerPin.offsetTop - shift.y) + 'px';
-    centerPin.style.left = (centerPin.offsetLeft - shift.x) + 'px';
-  }
+    var yCoord = centerPin.offsetTop - shift.y;
+    var xCoord = centerPin.offsetLeft - shift.x;
+
+    if (yCoord < MAX_COORDINATE_Y && yCoord > MIN_COORDINATE_Y) {
+      centerPin.style.top = (centerPin.offsetTop - shift.y) + 'px';
+    };
+
+    if (xCoord < MAX_COORDINATE_X && xCoord > MIN_COORDINATE_X) {
+      centerPin.style.left = (centerPin.offsetLeft - shift.x) + 'px';
+    };
+  };
 
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
-    // setsAddressValue();
+    setsAddressValue();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   };
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
-})
+});
