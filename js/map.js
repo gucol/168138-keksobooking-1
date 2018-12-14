@@ -290,7 +290,7 @@ var mapPinMouseupHandler = function () {
   adForm.classList.toggle('ad-form--disabled');
   toggleFormStatus(adForm);
   toggleFormStatus(mapFilter);
-  setsAddressValue();
+  // setsAddressValue();
   renderPins(similarAds);
 };
 
@@ -330,15 +330,40 @@ centerPin.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
   // Активируем карту:
   mapPinMouseupHandler();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
   // Метка не перемещалась:
   var dragged = false;
 
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
     dragged = true;
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    }
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    centerPin.style.top = (centerPin.offsetTop - shift.y) + 'px';
+    centerPin.style.left = (centerPin.offsetLeft - shift.x) + 'px';
   }
 
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
-  }
+    // setsAddressValue();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
 })
