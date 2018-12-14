@@ -353,11 +353,11 @@ centerPin.addEventListener('mousedown', function (evt) {
 
     if (yCoord < MAX_COORDINATE_Y && yCoord > MIN_COORDINATE_Y) {
       centerPin.style.top = (centerPin.offsetTop - shift.y) + 'px';
-    };
+    }
 
     if (xCoord < MAX_COORDINATE_X && xCoord > MIN_COORDINATE_X) {
       centerPin.style.left = (centerPin.offsetLeft - shift.x) + 'px';
-    };
+    }
   };
 
   var onMouseUp = function (upEvt) {
