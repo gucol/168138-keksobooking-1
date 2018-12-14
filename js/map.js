@@ -296,7 +296,7 @@ var mapPinMouseupHandler = function () {
 
 /* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять
 изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
-centerPin.addEventListener('mouseup', mapPinMouseupHandler);
+// centerPin.addEventListener('mouseup', mapPinMouseupHandler);
 
 // ВАЛИДАЦИЯ ФОРМЫ
 var roomNumber = document.querySelector('#room_number option');
@@ -323,3 +323,22 @@ var changeRoomNumberAndCapacity = function () {
 };
 
 changeRoomNumberAndCapacity();
+
+// ПЕРЕМЕЩЕНИЕ ПИНА
+centerPin.addEventListener('mousedown', function (evt) {
+  // Сброс событий по умолчанию:
+  evt.preventDefault();
+  // Активируем карту:
+  mapPinMouseupHandler();
+  // Метка не перемещалась:
+  var dragged = false;
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    dragged = true;
+  }
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+  }
+})
