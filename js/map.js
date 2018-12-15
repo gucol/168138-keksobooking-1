@@ -1,5 +1,7 @@
 'use strict';
 
+// Модуль, который управляет карточками объявлений и пинами: добавляет на страницу нужную карточку, отрисовывает пины и осуществляет взаимодействие карточки и метки на карте
+
 (function () {
   var MIN_PRICE = 1000;
   var MAX_PRICE = 1000000;
@@ -9,7 +11,6 @@
   var MAX_GESTS = 50;
   var NUMBER_OF_PINS = 8;
   var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
   var MIN_COORDINATE_X = 0;
   var MAX_COORDINATE_X = document.querySelector('.map').offsetWidth - PIN_WIDTH;
   var MIN_COORDINATE_Y = 130;
@@ -71,8 +72,6 @@
 
   // Переменные, хранящие ссылки на разметку:
   var map = document.querySelector('.map');
-  var pinsList = document.querySelector('.map__pins');
-  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
   var madeSimilarAds = function (index) {
@@ -115,20 +114,7 @@
   }
 
   window.similarAds = similarAds;
-  // Функция, передающая в метку необходимые данные:
-  var createPin = function (similarAd, callback) {
-    var pin = pinTemplate.cloneNode(true);
-    pin.style.left = similarAd.location.x - PIN_WIDTH / 2 + 'px';
-    pin.style.top = similarAd.location.y - PIN_HEIGHT + 'px';
-    pin.querySelector('img').src = similarAd.author.avatar;
-    pin.querySelector('img').alt = similarAd.offer.title;
 
-    pin.addEventListener('click', function (evt) {
-      // Про callback: https://ru.hexlet.io/blog/posts/javascript-what-the-heck-is-a-callback
-      callback(evt);
-    });
-    return pin;
-  };
 
   // Функция находит на карте карточку. Если есть — удаляет:
   var removeExistingPopup = function () {
@@ -138,30 +124,13 @@
     }
   };
 
+  window.map.removeExistingPopup = removeExistingPopup;
+
   var showCard = function (cardElement) {
     map.insertBefore(cardElement, map.querySelector('.map__filters-container'));
   };
 
-  // Функция рендера меток на карте:
-  var renderPins = function (dataArray) {
-    var fragment = document.createDocumentFragment();
-
-    dataArray.forEach(function (ElemetOfArray) {
-      var newPin = createPin(ElemetOfArray, function () {
-        removeExistingPopup();
-        var card = window.card(ElemetOfArray);
-        showCard(card);
-      });
-      fragment.appendChild(newPin);
-    });
-    pinsList.appendChild(fragment);
-  };
-
-  window.renderPins = renderPins;
-
-  /* Обработчик события mouseup на элемент .map__pin--main, вызывающий функцию, которая будет отменять
-  изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания. */
-  // centerPin.addEventListener('mouseup', mapPinMouseupHandler);
+  window.map.showCard = showCard;
 
   // ВАЛИДАЦИЯ ФОРМЫ
   var roomNumber = document.querySelector('#room_number option');
