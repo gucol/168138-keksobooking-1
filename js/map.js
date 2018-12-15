@@ -39,5 +39,5 @@
 
   window.map = {
     renderPins: renderPins
-  }
+  };
 })();
