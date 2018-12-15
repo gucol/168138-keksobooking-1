@@ -13,8 +13,6 @@
   centerPin.addEventListener('mousedown', function (evt) {
     // Сброс событий по умолчанию:
     evt.preventDefault();
-    // Активируем карту:
-    window.pageActivation.mapPinMouseupHandler();
 
     var startCoords = {
       x: evt.clientX,
@@ -23,6 +21,8 @@
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
+      // Активируем карту:
+      window.pageActivation.mapPinMouseupHandler();
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -48,6 +48,7 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      window.map.renderPins(window.data);
       window.pageActivation.setsAddressValue();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

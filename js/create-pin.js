@@ -6,7 +6,6 @@
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
 
-  var pinsList = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   // Функция, передающая в метку необходимые данные:
@@ -23,21 +22,5 @@
     return pin;
   };
 
-  // Функция рендера меток на карте:
-  var renderPins = function (dataArray) {
-    var fragment = document.createDocumentFragment();
-
-    dataArray.forEach(function (ElemetOfArray) {
-      var newPin = createPin(ElemetOfArray, function () {
-        window.map.removeExistingPopup();
-        var card = window.card(ElemetOfArray);
-        window.map.showCard(card);
-      });
-      fragment.appendChild(newPin);
-    });
-    pinsList.appendChild(fragment);
-  };
-
-  window.renderPins = renderPins;
-
+  window.createPin = createPin;
 })();

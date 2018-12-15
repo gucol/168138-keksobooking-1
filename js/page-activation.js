@@ -41,7 +41,6 @@
     adForm.classList.remove('ad-form--disabled');
     toggleFormStatus(adForm);
     toggleFormStatus(mapFilter);
-    window.renderPins(window.similarAds);
   };
 
   window.pageActivation = {
