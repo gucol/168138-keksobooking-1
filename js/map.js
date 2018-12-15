@@ -48,7 +48,7 @@ var FEATURES = [
 // Функция, возвращающая массив фич случайной длины:
 var featuresList = function () {
   var innerArray = [];
-  var randomNumber = randomNumberReturn(0, FEATURES.length - 1);
+  var randomNumber = window.util.randomNumberReturn(0, FEATURES.length - 1);
   for (var i = 0; i < randomNumber; i++) {
     innerArray.push(FEATURES[i]);
   }
@@ -81,31 +81,6 @@ var mapFilter = document.querySelector('.map__filters');
 var addressInput = document.querySelector('#address');
 var ESC_KEYCODE = 27;
 
-// Функция, возвращающая случайный элемент массива:
-var randomIndexReturn = function (processedArray) {
-  var randomIndex = Math.floor(Math.random() * processedArray.length);
-  return processedArray[randomIndex];
-};
-
-// Функция, возвращающая случайное число из диапазона:
-var randomNumberReturn = function (min, max) {
-  var rand = Math.floor(Math.random() * (max - min + 1) + min);
-  return rand;
-};
-
-// Функция, возвращающая элементы массива в случайном порядке (Фишер-Йетс):
-var shuffle = function (sortedArray) {
-  var randomItem;
-  var box;
-  for (var lastItem = sortedArray.length - 1; lastItem > 0; lastItem--) {
-    randomItem = Math.floor(Math.random() * (lastItem + 1));
-    box = sortedArray[randomItem];
-    sortedArray[randomItem] = sortedArray[lastItem];
-    sortedArray[lastItem] = box;
-  }
-  return sortedArray;
-};
-
 // Объект, переводящий данные из type на русский язык:
 var houseType = {
   flat: 'Квартира',
@@ -117,8 +92,8 @@ var houseType = {
 // Функция, собирающая случайный комплект свойств из объявленных выше массивов:
 var madeSimilarAds = function (index) {
   var location = {
-    x: randomNumberReturn(MIN_COORDINATE_X, MAX_COORDINATE_X),
-    y: randomNumberReturn(MIN_COORDINATE_Y, MAX_COORDINATE_Y)
+    x: window.util.randomNumberReturn(MIN_COORDINATE_X, MAX_COORDINATE_X),
+    y: window.util.randomNumberReturn(MIN_COORDINATE_Y, MAX_COORDINATE_Y)
   };
 
   var similarAd = {
@@ -129,15 +104,15 @@ var madeSimilarAds = function (index) {
     offer: {
       title: TITLES[index],
       address: location.x + ', ' + location.y,
-      price: randomNumberReturn(MIN_PRICE, MAX_PRICE),
-      type: randomIndexReturn(TYPES),
-      rooms: randomNumberReturn(MIN_ROOMS, MAX_ROOMS),
-      guests: randomNumberReturn(MIN_GESTS, MAX_GESTS),
-      checkin: randomIndexReturn(TIMES),
-      checkout: randomIndexReturn(TIMES),
+      price: window.util.randomNumberReturn(MIN_PRICE, MAX_PRICE),
+      type: window.util.randomIndexReturn(TYPES),
+      rooms: window.util.randomNumberReturn(MIN_ROOMS, MAX_ROOMS),
+      guests: window.util.randomNumberReturn(MIN_GESTS, MAX_GESTS),
+      checkin: window.util.randomIndexReturn(TIMES),
+      checkout: window.util.randomIndexReturn(TIMES),
       features: featuresList(),
       description: '',
-      photos: shuffle(PHOTOS)
+      photos: window.util.shuffle(PHOTOS)
     },
 
     location: {
@@ -228,7 +203,7 @@ var createPhoto = function (photoSrc) {
 // Функция, создающая комплект фотографий жилья:
 var drawPhotosList = function (photos) {
   var fragment = document.createDocumentFragment();
-  var mixedArray = shuffle(photos);
+  var mixedArray = window.util.shuffle(photos);
   for (var z = 0; z < photos.length; z++) {
     fragment.appendChild(createPhoto(mixedArray[z]));
   }
