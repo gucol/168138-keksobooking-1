@@ -4,11 +4,11 @@
 
 (function () {
   var centerPin = document.querySelector('.map__pin--main');
+  var PIN_WIDTH = 50;
   var MIN_COORDINATE_X = 0;
   var MAX_COORDINATE_X = document.querySelector('.map').offsetWidth - PIN_WIDTH;
   var MIN_COORDINATE_Y = 130;
   var MAX_COORDINATE_Y = 630;
-  var PIN_WIDTH = 50;
 
   centerPin.addEventListener('mousedown', function (evt) {
     // Сброс событий по умолчанию:
