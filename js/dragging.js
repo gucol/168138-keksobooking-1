@@ -9,10 +9,15 @@
   var MAX_COORDINATE_X = document.querySelector('.map').offsetWidth - PIN_WIDTH;
   var MIN_COORDINATE_Y = 130;
   var MAX_COORDINATE_Y = 630;
+  var dragged;
 
   centerPin.addEventListener('mousedown', function (evt) {
     // Сброс событий по умолчанию:
     evt.preventDefault();
+    dragged = 0;
+
+    // Активируем карту:
+    window.pageActivation.mapPinMouseupHandler();
 
     var startCoords = {
       x: evt.clientX,
@@ -21,8 +26,6 @@
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      // Активируем карту:
-      window.pageActivation.mapPinMouseupHandler();
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -44,12 +47,18 @@
       if (xCoord < MAX_COORDINATE_X && xCoord > MIN_COORDINATE_X) {
         centerPin.style.left = (centerPin.offsetLeft - shift.x) + 'px';
       }
+
+      dragged = 1;
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      window.map.renderPins(window.data);
-      window.pageActivation.setsAddressValue();
+
+      if (dragged) {
+        window.map.renderPins(window.data);
+        window.pageActivation.setsAddressValue();
+      }
+
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
