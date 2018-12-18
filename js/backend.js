@@ -10,13 +10,16 @@ send — функция, которая отправляет данные на �
 */
 
 (function () {
+  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var SAVE_URL = 'https://js.dump.academy/keksobooking';
+
   var load = function (onLoad, onError) {
   	var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        onSuccess(xhr.response);
+        onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
@@ -26,12 +29,28 @@ send — функция, которая отправляет данные на �
       onError('Произошла ошибка соединения');
     });
     
-    xhr.open('GET', URL);
+    xhr.open('GET', LOAD_URL);
     xhr.send();
   };
 
   var save = function (data, onLoad, onError) {
-  	// body...
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function () {
+      if (xhr.status === SUCCESS_STATUS) {
+        onLoad(xhr.response);
+      } else {
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      }
+    });
+
+    xhr.addEventListener('error', function () {
+      onError('Возникла непредвиденная ошибка');
+    });
+
+    xhr.open('POST', SAVE_URL);
+    xhr.send(data);	
   };
 
   window.backend = {
