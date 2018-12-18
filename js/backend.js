@@ -1,27 +1,20 @@
 'use strict';
 
-/*
-Модуль, который экспортирует в глобальную область видимости функции для взаимодействия с удаленным севером через XHR.
-load — функция, которая:
-— получает с сервера данные с помощью объекта XMLHttpRequest, 
-— обрабатывает полученные запросы,
-— передаёт полученную информацию в функцию обратного вызова;
-send — функция, которая отправляет данные на сервер.
-*/
-
 (function () {
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var SAVE_URL = 'https://js.dump.academy/keksobooking';
+  var SUCCESS_STATUS = 200;
 
+  // Функция, получающая данные от сервера:
   var load = function (onLoad, onError) {
   	var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Данные не загрузились. Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
@@ -33,6 +26,7 @@ send — функция, которая отправляет данные на �
     xhr.send();
   };
 
+  // Функция, отправляющая данные на сервер:
   var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -41,12 +35,12 @@ send — функция, которая отправляет данные на �
       if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Информация не отправлена. Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError('Возникла непредвиденная ошибка');
+      onError('Произошла ошибка соединения');
     });
 
     xhr.open('POST', SAVE_URL);
