@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
-  var SAVE_URL = 'https://js.dump.academy/keksobooking';
+  var LOAD_URL = 'https://js.dump.academy/keksobooking';
+  var SAVE_URL = 'https://js.dump.academy/keksobooking/data';
   var SUCCESS_STATUS = 200;
 
   // Функция, получающая данные от сервера:
   var load = function (onLoad, onError) {
-  	var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
@@ -21,7 +21,7 @@
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения');
     });
-    
+
     xhr.open('GET', LOAD_URL);
     xhr.send();
   };
@@ -44,11 +44,11 @@
     });
 
     xhr.open('POST', SAVE_URL);
-    xhr.send(data);	
+    xhr.send(data);
   };
 
   window.backend = {
-  	load: load,
-  	save: save
-  }
+    load: load,
+    save: save
+  };
 })();
