@@ -3,6 +3,7 @@
 // Модуль, который работает с формой объявления:
 
 (function () {
+
   var form = document.querySelector('.ad-form');
   var roomNumber = form.querySelector('#room_number');
   var capacity = form.querySelector('#capacity');
