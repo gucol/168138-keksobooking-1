@@ -1,6 +1,6 @@
 'use strict';
 
-// Модуль, отвечающий за перемещение пина
+// Модуль, отвечающий за перемещение пина:
 
 (function () {
   var centerPin = document.querySelector('.map__pin--main');

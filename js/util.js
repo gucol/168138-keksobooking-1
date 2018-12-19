@@ -48,6 +48,7 @@
     document.removeEventListener('keydown', closeErrorMessage);
     modalError.removeEventListener('click', closeErrorMessage);
   };
+  
   window.util = {
     randomIndexReturn: randomIndexReturn,
     randomNumberReturn: randomNumberReturn,
