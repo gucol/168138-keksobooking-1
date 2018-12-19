@@ -100,7 +100,7 @@
       card.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + getCardCapacityRooms(ad.offer.rooms) + ad.offer.guests + (ad.offer.guests === 1 ? ' гостя' : ' гостей');
     }
 
-    if(!ad.offer.description) {
+    if (!ad.offer.description) {
       card.querySelector('.popup__description').remove();
     } else {
       card.querySelector('.popup__description').textContent = ad.offer.description;
