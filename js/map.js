@@ -27,11 +27,13 @@
     var fragment = document.createDocumentFragment();
 
     dataArray.forEach(function (ElemetOfArray) {
-      var newPin = window.createPin(ElemetOfArray, function () {
-        removeExistingPopup();
-        var card = window.createCard(ElemetOfArray);
-        showCard(card);
-      });
+      if (ElemetOfArray.offer) {
+        var newPin = window.createPin(ElemetOfArray, function () {
+          removeExistingPopup();
+          var card = window.createCard(ElemetOfArray);
+          showCard(card);
+        });
+      }
       fragment.appendChild(newPin);
     });
     pinsList.appendChild(fragment);

@@ -18,7 +18,7 @@
     palace: 'Дворец'
   };
 
-  aar getCardCapacityRooms = function (rooms) {
+  var getCardCapacityRooms = function (rooms) {
     var cardCapacityRooms = ' комнаты для ';
     if (rooms === 1) {
       cardCapacityRooms = ' комната для ';
@@ -81,8 +81,13 @@
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos));
     card.querySelector('.popup__close').addEventListener('click', deleteCard);
-    card.querySelector('.popup__avatar').src = ad.author.avatar;
-    
+
+    if (ad.author.avatar === 0) {
+      card.querySelector('.popup__avatar').remove();
+    } else {
+      card.querySelector('.popup__avatar').src = ad.author.avatar;
+    }
+
     if (ad.offer.features === 0) {
       card.querySelector('.popup__features').remove();
     } else {
