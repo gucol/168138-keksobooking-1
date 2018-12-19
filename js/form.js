@@ -3,9 +3,11 @@
 // Модуль, который работает с формой объявления
 
 (function () {
+
   var form = document.querySelector('.ad-form');
   var roomNumber = form.querySelector('#room_number option');
   var capacity = form.querySelector('#capacity');
+
 
   /* Поле «Количество комнат» синхронизировано с полем «Количество мест» таким образом,
   что при выборе количества комнат вводятся ограничения на допустимые варианты выбора
