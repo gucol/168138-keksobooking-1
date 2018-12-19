@@ -34,6 +34,7 @@
           showCard(card);
         });
       }
+
       fragment.appendChild(newPin);
     });
     pinsList.appendChild(fragment);
