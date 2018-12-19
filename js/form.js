@@ -4,7 +4,7 @@
 
 (function () {
   var form = document.querySelector('.ad-form');
-  var roomNumber = form.querySelector('#room_number option');
+  var roomNumber = form.querySelector('#room_number');
   var capacity = form.querySelector('#capacity');
 
   /* Поле «Количество комнат» синхронизировано с полем «Количество мест» таким образом,
@@ -23,7 +23,13 @@
     }
   };
 
-  changeRoomNumberAndCapacity();
+  roomNumber.addEventListener('change', function () {
+    changeRoomNumberAndCapacity();
+  });
+
+  capacity.addEventListener('change', function () {
+    changeRoomNumberAndCapacity();
+  });
 
   var onSuccessSubmit = function () {
     var success = document.querySelector('#success').content.querySelector('.success');
@@ -40,29 +46,8 @@
     modalSucces.removeEventListener('click', closeSuccessMessage);
   };
 
-  var onErrorSubmit = function (message) {
-    var error = document.querySelector('#error').content.querySelector('.error');
-    var errorElement = error.cloneNode(true);
-    var errorMessage = errorElement.querySelector('.error__message');
-    var errorBtn = errorElement.querySelector('.error__button');
-
-    errorMessage.textContent = message;
-
-    document.querySelector('main').insertAdjacentElement('afterbegin', errorElement);
-    document.addEventListener('keydown', closeErrorMessage);
-    errorElement.addEventListener('click', closeErrorMessage);
-    errorBtn.addEventListener('click', closeErrorMessage);
-  };
-
-  var closeErrorMessage = function () {
-    var modalError = document.querySelector('.error');
-    document.querySelector('main').removeChild(modalError);
-    document.removeEventListener('keydown', closeErrorMessage);
-    modalError.removeEventListener('click', closeErrorMessage);
-  };
-
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), onSuccessSubmit, onErrorSubmit);
+    window.backend.save(new FormData(form), onSuccessSubmit, window.util.onError);
     evt.preventDefault();
   });
 })();

@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var LOAD_URL = 'https://js.dump.academy/keksobooking';
-  var SAVE_URL = 'https://js.dump.academy/keksobooking/data';
+  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var SAVE_URL = 'https://js.dump.academy/keksobooking';
   var SUCCESS_STATUS = 200;
 
   // Функция, получающая данные от сервера:
