@@ -6,6 +6,7 @@
 и метки на карте */
 (function () {
   var map = document.querySelector('.map');
+  var pinsList = document.querySelector('.map__pins');
 
   // Функция находит на карте карточку. Если есть — удаляет:
   var removeExistingPopup = function () {
@@ -19,19 +20,19 @@
     map.insertBefore(cardElement, map.querySelector('.map__filters-container'));
   };
 
-  var pinsList = document.querySelector('.map__pins');
-
   // Функция рендера меток на карте:
   var renderPins = function (dataArray) {
     var fragment = document.createDocumentFragment();
 
     dataArray.forEach(function (ElemetOfArray) {
-      if (ElemetOfArray.offer) {
-        var newPin = window.createPin(ElemetOfArray, function () {
-          removeExistingPopup();
-          var card = window.createCard(ElemetOfArray);
-          showCard(card);
-        });
+      for (var u = 0; u <= 5; u++) {
+        if (ElemetOfArray.offer) {
+          var newPin = window.createPin(ElemetOfArray, function () {
+            removeExistingPopup();
+            var card = window.createCard(ElemetOfArray);
+            showCard(card);
+          });
+        }
       }
 
       fragment.appendChild(newPin);
@@ -39,7 +40,15 @@
     pinsList.appendChild(fragment);
   };
 
+  var removePins = function () {
+    var pins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < pins.length; i++) {
+      pinsList.removeChild(pins[i]);
+    }
+  };
+
   window.map = {
-    renderPins: renderPins
+    renderPins: renderPins,
+    removePins: removePins
   };
 })();
