@@ -1,6 +1,6 @@
 'use strict';
 
-// Модуль, который отвечает за создание карточки объявлений
+// Модуль, который отвечает за создание карточки объявлений:
 
 (function () {
   var CARD_PHOTO_WIDTH = 45;
@@ -16,6 +16,17 @@
     bungalo: 'Бунгало',
     house: 'Дом',
     palace: 'Дворец'
+  };
+
+  var getCardCapacityRooms = function (rooms) {
+    var cardCapacityRooms = ' комнаты для ';
+    if (rooms === 1) {
+      cardCapacityRooms = ' комната для ';
+    }
+    if (rooms >= 5) {
+      cardCapacityRooms = ' комнат для ';
+    }
+    return cardCapacityRooms;
   };
 
   // Функция создания одного из элементов списка фич:
@@ -68,10 +79,33 @@
     card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
     card.querySelector('.popup__type').textContent = houseType[ad.offer.type];
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-    card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features));
-    card.querySelector('.popup__description').textContent = ad.offer.description;
     card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos));
     card.querySelector('.popup__close').addEventListener('click', deleteCard);
+
+    if (ad.author.avatar === 0) {
+      card.querySelector('.popup__avatar').remove();
+    } else {
+      card.querySelector('.popup__avatar').src = ad.author.avatar;
+    }
+
+    if (ad.offer.features === 0) {
+      card.querySelector('.popup__features').remove();
+    } else {
+      card.querySelector('.popup__features').appendChild(drawFeaturesList(ad.offer.features));
+    }
+
+    if (ad.offer.rooms === 0 && ad.offer.guests === 0) {
+      card.querySelector('.popup__text--capacity').remove();
+    } else {
+      card.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + getCardCapacityRooms(ad.offer.rooms) + ad.offer.guests + (ad.offer.guests === 1 ? ' гостя' : ' гостей');
+    }
+
+    if (!ad.offer.description) {
+      card.querySelector('.popup__description').remove();
+    } else {
+      card.querySelector('.popup__description').textContent = ad.offer.description;
+    }
+
     return card;
   };
 

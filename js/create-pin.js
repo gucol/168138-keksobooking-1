@@ -1,7 +1,6 @@
 'use strict';
 
 // Модуль, который отвечает за создание пина
-
 (function () {
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;

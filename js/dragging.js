@@ -1,6 +1,6 @@
 'use strict';
 
-// Модуль, отвечающий за перемещение пина
+// Модуль, отвечающий за перемещение пина:
 
 (function () {
   var centerPin = document.querySelector('.map__pin--main');
@@ -10,6 +10,12 @@
   var MIN_COORDINATE_Y = 130;
   var MAX_COORDINATE_Y = 630;
   var dragged;
+  var isMapActive = false;
+
+  var onSuccess = function (data) {
+    window.data.pins = data;
+    window.map.renderPins(data);
+  };
 
   centerPin.addEventListener('mousedown', function (evt) {
     // Сброс событий по умолчанию:
@@ -54,8 +60,12 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
+      if (!isMapActive) {
+        window.backend.load(onSuccess, window.util.onError);
+        isMapActive = true;
+      }
+
       if (dragged) {
-        window.map.renderPins(window.data);
         window.pageActivation.setsAddressValue();
       }
 
