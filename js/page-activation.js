@@ -9,14 +9,24 @@
   var PIN_COORD_Y = 375;
 
   var map = document.querySelector('.map');
-  var centerPin = map.querySelector('.map__pin--main');
+  var centerPin = document.querySelector('.map__pin--main');
   var mapFilter = map.querySelector('.map__filters');
-  var form = map.querySelector('.ad-form');
-  var addressInput = map.querySelector('#address');
+  var form = document.querySelector('.ad-form');
+  var addressInput = document.querySelector('#address');
   var fieldsetForm = map.querySelectorAll('.ad-form fieldset');
   var mapFilterFieldset = map.querySelectorAll('.map__filters select');
 
-  addressInput.value = PIN_COORD_X + ', ' + PIN_COORD_Y;
+  // Метод, который устанавливает значения поля ввода адреса:
+  var setsAddressValue = function () {
+    var centerPinCenterCoord = {
+      x: parseInt(centerPin.style.left, 10) + PIN_WIDTH / 2,
+      y: parseInt(centerPin.style.top, 10) + PIN_HEIGHT / 2
+    };
+
+    addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
+  };
+
+  setsAddressValue();
 
   var disableForm = function (data) {
     for (var i = 0; i < data.length; i++) {
@@ -48,16 +58,6 @@
         formFieldsets[t].disabled = false;
       }
     }
-  };
-
-  // Метод, который устанавливает значения поля ввода адреса:
-  var setsAddressValue = function () {
-    var centerPinCenterCoord = {
-      x: parseInt(centerPin.style.left, 10) + PIN_WIDTH / 2,
-      y: parseInt(centerPin.style.top, 10) + PIN_HEIGHT / 2
-    };
-
-    addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
   };
 
   var start = function () {
