@@ -3,6 +3,19 @@
 // Модуль со вспомогательными функциями
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500; // ms
+
+  var debounce = function (cb) {
+    var lastTimeout;
+
+    return function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
+    };
+  };
+
   // Функция, возвращающая случайный элемент массива:
   var randomIndexReturn = function (processedArray) {
     var randomIndex = Math.floor(Math.random() * processedArray.length);
@@ -50,6 +63,7 @@
   };
 
   window.util = {
+    debounce: debounce,
     randomIndexReturn: randomIndexReturn,
     randomNumberReturn: randomNumberReturn,
     shuffle: shuffle,

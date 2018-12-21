@@ -3,28 +3,18 @@
 // Модуль, отвечающий за активацию карты
 
 (function () {
-  var centerPin = document.querySelector('.map__pin--main');
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+  var PIN_COORD_X = 570;
+  var PIN_COORD_Y = 375;
 
   var map = document.querySelector('.map');
-  var mapFilter = document.querySelector('.map__filters');
-  var adForm = document.querySelector('.ad-form');
+  var centerPin = document.querySelector('.map__pin--main');
+  var mapFilter = map.querySelector('.map__filters');
+  var form = document.querySelector('.ad-form');
   var addressInput = document.querySelector('#address');
-
-  // Функция, переключающая атрибут disabled у <input> и <select> в формах:
-  var toggleFormStatus = function (form) {
-    var formInputs = form.querySelectorAll('input');
-    var formSelects = form.querySelectorAll('select');
-    if (formInputs[0].getAttribute('disabled')) {
-      for (var e = 0; e < formInputs.length; e++) {
-        formInputs[e].disabled = false;
-      }
-      for (var u = 0; u < formSelects.length; u++) {
-        formSelects[u].disabled = false;
-      }
-    }
-  };
+  var fieldsetForm = map.querySelectorAll('.ad-form fieldset');
+  var mapFilterFieldset = map.querySelectorAll('.map__filters select');
 
   // Метод, который устанавливает значения поля ввода адреса:
   var setsAddressValue = function () {
@@ -36,15 +26,60 @@
     addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
   };
 
-  var mapPinMouseupHandler = function () {
+  setsAddressValue();
+
+  var disableForm = function (data) {
+    for (var i = 0; i < data.length; i++) {
+      data[i].setAttribute('disabled', 'disabled');
+    }
+  };
+
+  disableForm(fieldsetForm);
+  disableForm(mapFilterFieldset);
+
+  // Функция, переключающая атрибут disabled у <input> и <select> в формах:
+  var toggleFormStatus = function (someForm) {
+    var formInputs = someForm.querySelectorAll('input');
+    var formSelects = someForm.querySelectorAll('select');
+    var formFieldsets = someForm.querySelectorAll('fieldset');
+
+    if (formInputs[0].getAttribute('disabled')) {
+      for (var e = 0; e < formInputs.length; e++) {
+        formInputs[e].disabled = false;
+      }
+    }
+    if (formSelects[0].getAttribute('disabled')) {
+      for (var u = 0; u < formSelects.length; u++) {
+        formSelects[u].disabled = false;
+      }
+    }
+    if (formFieldsets[0].getAttribute('disabled')) {
+      for (var t = 0; t < formFieldsets.length; t++) {
+        formFieldsets[t].disabled = false;
+      }
+    }
+  };
+
+  var start = function () {
     map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    toggleFormStatus(adForm);
+    form.classList.remove('ad-form--disabled');
+    toggleFormStatus(form);
     toggleFormStatus(mapFilter);
+  };
+
+  var disativate = function () {
+    map.classList.remove('map--faded');
+    window.map.removePins();
+    window.map.removeExistingPopup();
+    centerPin.style.left = PIN_COORD_X + 'px';
+    centerPin.style.top = PIN_COORD_Y + 'px';
+    form.reset();
+    setsAddressValue();
   };
 
   window.pageActivation = {
     setsAddressValue: setsAddressValue,
-    mapPinMouseupHandler: mapPinMouseupHandler
+    start: start,
+    disativate: disativate
   };
 })();
