@@ -25,14 +25,12 @@
     var fragment = document.createDocumentFragment();
 
     dataArray.forEach(function (ElemetOfArray) {
-      for (var u = 0; u <= 5; u++) {
-        if (ElemetOfArray.offer) {
-          var newPin = window.createPin(ElemetOfArray, function () {
-            removeExistingPopup();
-            var card = window.createCard(ElemetOfArray);
-            showCard(card);
-          });
-        }
+      if (ElemetOfArray.offer) {
+        var newPin = window.createPin(ElemetOfArray, function () {
+          removeExistingPopup();
+          var card = window.createCard(ElemetOfArray);
+          showCard(card);
+        });
       }
 
       fragment.appendChild(newPin);
@@ -40,7 +38,8 @@
     pinsList.appendChild(fragment);
   };
 
-  var removePins = function () {
+
+  var removePins = function() {
     var pins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
     for (var i = 0; i < pins.length; i++) {
       pinsList.removeChild(pins[i]);
@@ -49,6 +48,7 @@
 
   window.map = {
     renderPins: renderPins,
-    removePins: removePins
+    removePins: removePins,
+    removeExistingPopup: removeExistingPopup
   };
 })();

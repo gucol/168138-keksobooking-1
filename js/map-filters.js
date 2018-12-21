@@ -84,6 +84,7 @@
     window.map.renderPins(filteredArray);
   };
 
+  mapFilters.addEventListener('change', window.map.removeExistingPopup);
   mapFilters.addEventListener('change', window.util.debounce(fulterPins));
 })();
 
