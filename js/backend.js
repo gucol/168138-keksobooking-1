@@ -4,6 +4,7 @@
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var SAVE_URL = 'https://js.dump.academy/keksobooking';
   var SUCCESS_STATUS = 200;
+  var TIMER_VALUE = 1000;
 
   // Функция, получающая данные от сервера:
   var load = function (onLoad, onError) {
@@ -26,7 +27,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMER_VALUE;
 
     xhr.open('GET', LOAD_URL);
     xhr.send();
@@ -53,7 +54,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMER_VALUE;
 
     xhr.open('POST', SAVE_URL);
     xhr.send(data);

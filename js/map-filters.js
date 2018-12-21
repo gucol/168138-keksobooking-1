@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var mapFilters = document.querySelector('.map__filters');
-  var housingType = mapFilters.querySelector('#housing-type');
-  var housingPrice = mapFilters.querySelector('#housing-price');
-  var housingRooms = mapFilters.querySelector('#housing-rooms');
-  var housingGuests = mapFilters.querySelector('#housing-guests');
-  var housingFeatures = document.querySelectorAll('.map__checkbox');
+  var mapFiltersBlock = document.querySelector('.map__filters');
+  var housingType = mapFiltersBlock.querySelector('#housing-type');
+  var housingPrice = mapFiltersBlock.querySelector('#housing-price');
+  var housingRooms = mapFiltersBlock.querySelector('#housing-rooms');
+  var housingGuests = mapFiltersBlock.querySelector('#housing-guests');
+  var housingFeatures = mapFiltersBlock.querySelectorAll('.map__checkbox');
 
   var AllHousingPrice = {
     low: {
@@ -84,7 +84,7 @@
     window.map.renderPins(filteredArray);
   };
 
-  mapFilters.addEventListener('change', window.map.removeExistingPopup);
-  mapFilters.addEventListener('change', window.util.debounce(fulterPins));
+  mapFiltersBlock.addEventListener('change', window.map.removeExistingPopup);
+  mapFiltersBlock.addEventListener('change', window.util.debounce(fulterPins));
 })();
 

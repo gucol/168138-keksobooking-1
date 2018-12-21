@@ -5,9 +5,9 @@
 отрисовывает пины и осуществляет взаимодействие карточки
 и метки на карте */
 (function () {
-  var map = document.querySelector('.map');
-  var pinsList = document.querySelector('.map__pins');
   var PINS_COUNT = 5;
+  var map = document.querySelector('.map');
+  var pins = document.querySelector('.map__pins');
 
   // Функция находит на карте карточку. Если есть — удаляет:
   var removeExistingPopup = function () {
@@ -37,14 +37,14 @@
 
       fragment.appendChild(newPin);
     });
-    pinsList.appendChild(fragment);
+    pins.appendChild(fragment);
   };
 
 
   var removePins = function () {
-    var pins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < pins.length; i++) {
-      pinsList.removeChild(pins[i]);
+    var ordinaryPins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < ordinaryPins.length; i++) {
+      pins.removeChild(ordinaryPins[i]);
     }
   };
 
