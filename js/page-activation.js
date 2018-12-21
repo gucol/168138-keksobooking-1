@@ -6,13 +6,17 @@
   var centerPin = document.querySelector('.map__pin--main');
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+  var PIN_COORD_X = 570;
+  var PIN_COORD_Y = 375;
 
   var map = document.querySelector('.map');
   var mapFilter = document.querySelector('.map__filters');
   var adForm = document.querySelector('.ad-form');
-  var addressInput = document.querySelector('#address');   
+  var addressInput = document.querySelector('#address');
   var adFormFieldset = document.querySelectorAll('.ad-form fieldset');
   var mapFilterFieldset = document.querySelectorAll('.map__filters select');
+
+  addressInput.value = PIN_COORD_X + ', ' + PIN_COORD_Y;
 
   var disableForm = function (data) {
     for (var i = 0; i < data.length; i++) {

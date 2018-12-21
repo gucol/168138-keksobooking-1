@@ -40,6 +40,7 @@
     xhr.addEventListener('load', function () {
       if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
+        window.form.resetForm();
       } else {
         onError('Информация не отправлена. Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

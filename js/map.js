@@ -39,7 +39,7 @@
   };
 
 
-  var removePins = function() {
+  var removePins = function () {
     var pins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
     for (var i = 0; i < pins.length; i++) {
       pinsList.removeChild(pins[i]);
