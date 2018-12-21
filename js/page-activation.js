@@ -60,15 +60,26 @@
     addressInput.value = centerPinCenterCoord.x + ', ' + centerPinCenterCoord.y;
   };
 
-  var mapPinMouseupHandler = function () {
+  var start = function () {
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     toggleFormStatus(adForm);
     toggleFormStatus(mapFilter);
   };
 
+  var disativate = function () {
+    map.classList.remove('map--faded');
+    window.map.removePins();
+    window.map.removeExistingPopup();
+    centerPin.style.left = PIN_COORD_X + 'px';
+    centerPin.style.top = PIN_COORD_Y + 'px';
+    adForm.reset();
+    setsAddressValue();
+  };
+
   window.pageActivation = {
     setsAddressValue: setsAddressValue,
-    mapPinMouseupHandler: mapPinMouseupHandler
+    start: start,
+    disativate: disativate
   };
 })();

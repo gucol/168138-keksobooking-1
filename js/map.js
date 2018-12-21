@@ -7,6 +7,7 @@
 (function () {
   var map = document.querySelector('.map');
   var pinsList = document.querySelector('.map__pins');
+  var PINS_COUNT = 5;
 
   // Функция находит на карте карточку. Если есть — удаляет:
   var removeExistingPopup = function () {
@@ -23,8 +24,9 @@
   // Функция рендера меток на карте:
   var renderPins = function (dataArray) {
     var fragment = document.createDocumentFragment();
+    var slicedArray = dataArray.slice(0, PINS_COUNT);
 
-    dataArray.forEach(function (ElemetOfArray) {
+    slicedArray.forEach(function (ElemetOfArray) {
       if (ElemetOfArray.offer) {
         var newPin = window.createPin(ElemetOfArray, function () {
           removeExistingPopup();

@@ -3,16 +3,11 @@
 // Модуль, который работает с формой объявления:
 
 (function () {
-  var PIN_COORD_X = 570;
-  var PIN_COORD_Y = 375;
-
   var form = document.querySelector('.ad-form');
-  var mainPin = document.querySelector('.map__pin--main');
   var roomNumber = form.querySelector('#room_number');
   var capacity = form.querySelector('#capacity');
   var inputType = form.querySelector('#type');
   var inputPrice = form.querySelector('#price');
-  var addressInput = form.querySelector('#address');
   var timeFieldset = form.querySelector('.ad-form__element--time');
   var timeSelects = ['timein', 'timeout'];
   var formReset = form.querySelector('.ad-form__reset');
@@ -92,6 +87,7 @@
   });
 
   var onSuccessSubmit = function () {
+    window.pageActivation.disativate();
     var success = document.querySelector('#success').content.querySelector('.success');
     var successElement = success.cloneNode(true);
     document.querySelector('main').appendChild(successElement);
@@ -111,19 +107,8 @@
     evt.preventDefault();
   });
 
-  var resetForm = function () {
-    formReset.addEventListener('click', function () {
-      window.map.removePins();
-      window.map.removeExistingPopup();
-      mainPin.style.left = PIN_COORD_X + 'px';
-      mainPin.style.top = PIN_COORD_Y + 'px';
-      addressInput.value = PIN_COORD_X + ', ' + PIN_COORD_Y;
-    });
-  };
-
-  resetForm();
-
-  window.form = {
-    resetForm: resetForm
-  };
+  formReset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.pageActivation.disativate();
+  });
 })();

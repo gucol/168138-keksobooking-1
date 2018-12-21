@@ -23,7 +23,7 @@
     dragged = 0;
 
     // Активируем карту:
-    window.pageActivation.mapPinMouseupHandler();
+    window.pageActivation.start();
 
     var startCoords = {
       x: evt.clientX,
