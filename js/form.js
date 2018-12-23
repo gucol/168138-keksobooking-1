@@ -58,11 +58,11 @@
   timeFieldset.addEventListener('change', function (evt) {
     var target = evt.target;
     var selects = timeFieldset.querySelectorAll('select');
-    for (var i = 0; i < selects.length; i++) {
-      if (timeSelects.indexOf(selects[i].id) !== -1) {
-        selects[i].value = target.value;
-      }
-    }
+    selects.forEach(function(item){
+      if (timeSelects.indexOf(item.id) !== -1) {
+        item.value = target.value;
+      }      
+    });
   });
 
   var changeRoomNumberAndCapacity = function () {

@@ -41,11 +41,12 @@
   // Функция, создающая список фич:
   var drawFeaturesList = function (features) {
     var fragment = document.createDocumentFragment();
-    for (var y = 0; y < features.length; y++) {
-      fragment.appendChild(createFeature(features[y]));
-    }
+    features.forEach(function(y){
+      fragment.appendChild(createFeature(y));
+    });
     return fragment;
   };
+
 
   // Функция создания одной фотографии жилища:
   var createPhoto = function (photoSrc) {
@@ -62,9 +63,10 @@
   var drawPhotosList = function (photos) {
     var fragment = document.createDocumentFragment();
     var mixedArray = window.util.shuffle(photos);
-    for (var z = 0; z < photos.length; z++) {
-      fragment.appendChild(createPhoto(mixedArray[z]));
-    }
+    photos.forEach(function(item, mixedArray){
+      fragment.appendChild(createPhoto(item));
+    });
+
     return fragment;
   };
 

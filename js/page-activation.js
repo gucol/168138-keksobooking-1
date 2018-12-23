@@ -30,9 +30,9 @@
   setsAddressValue();
 
   var disableForm = function (data) {
-    for (var i = 0; i < data.length; i++) {
-      data[i].setAttribute('disabled', 'disabled');
-    }
+    data.forEach(function(item){
+      item.setAttribute('disabled', 'disabled');
+    });
   };
 
   disableForm(fieldsetForm);
@@ -45,19 +45,21 @@
     var formFieldsets = someForm.querySelectorAll('fieldset');
 
     if (formInputs[0].getAttribute('disabled')) {
-      for (var e = 0; e < formInputs.length; e++) {
-        formInputs[e].disabled = false;
-      }
+      formInputs.forEach(function(item){
+        item.disabled = false;
+      });
     }
+
     if (formSelects[0].getAttribute('disabled')) {
-      for (var u = 0; u < formSelects.length; u++) {
-        formSelects[u].disabled = false;
-      }
+      formSelects.forEach(function(item){
+        item.disabled = false;
+      });
     }
+
     if (formFieldsets[0].getAttribute('disabled')) {
-      for (var t = 0; t < formFieldsets.length; t++) {
-        formFieldsets[t].disabled = false;
-      }
+      formFieldsets.forEach(function(item){
+        item.disabled = false;
+      });
     }
   };
 

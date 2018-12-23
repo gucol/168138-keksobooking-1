@@ -26,11 +26,11 @@
     var fragment = document.createDocumentFragment();
     var slicedArray = dataArray.slice(0, PINS_COUNT);
 
-    slicedArray.forEach(function (ElemetOfArray) {
-      if (ElemetOfArray.offer) {
-        var newPin = window.createPin(ElemetOfArray, function () {
+    slicedArray.forEach(function (item) {
+      if (item.offer) {
+        var newPin = window.createPin(item, function () {
           removeExistingPopup();
-          var card = window.createCard(ElemetOfArray);
+          var card = window.createCard(item);
           showCard(card);
         });
       }
@@ -43,9 +43,9 @@
 
   var removePins = function () {
     var ordinaryPins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < ordinaryPins.length; i++) {
-      pins.removeChild(ordinaryPins[i]);
-    };
+    ordinaryPins.forEach(function(i){
+      pins.removeChild(i);
+    });
   };
 
   window.map = {
