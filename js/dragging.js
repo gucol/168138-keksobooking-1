@@ -11,7 +11,6 @@
 
   var centerPin = document.querySelector('.map__pin--main');
   var isPinDragged;
-  var isMapActive = false;
 
   var onSuccess = function (data) {
     window.data.pins = data;
@@ -61,13 +60,9 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      if (!isMapActive) {
-        window.backend.load(onSuccess, window.util.onError);
-        isMapActive = true;
-      }
-
       if (isPinDragged) {
         window.pageActivation.setsAddressValue();
+        window.backend.load(onSuccess, window.util.onError);
       }
 
       document.removeEventListener('mousemove', onMouseMove);

@@ -13,8 +13,9 @@
   var mapFilter = map.querySelector('.map__filters');
   var form = document.querySelector('.ad-form');
   var addressInput = document.querySelector('#address');
-  var fieldsetForm = map.querySelectorAll('.ad-form fieldset');
+  var fieldsetForm = form.querySelectorAll('.ad-form fieldset');
   var mapFilterFieldset = map.querySelectorAll('.map__filters select');
+
 
   // Метод, который устанавливает значения поля ввода адреса:
   var setsAddressValue = function () {
