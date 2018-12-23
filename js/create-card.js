@@ -41,8 +41,8 @@
   // Функция, создающая список фич:
   var drawFeaturesList = function (features) {
     var fragment = document.createDocumentFragment();
-    features.forEach(function(y){
-      fragment.appendChild(createFeature(y));
+    features.forEach(function (item) {
+      fragment.appendChild(createFeature(item));
     });
     return fragment;
   };
@@ -63,10 +63,9 @@
   var drawPhotosList = function (photos) {
     var fragment = document.createDocumentFragment();
     var mixedArray = window.util.shuffle(photos);
-    photos.forEach(function(item, mixedArray){
-      fragment.appendChild(createPhoto(item));
-    });
-
+    for (var z = 0; z < photos.length; z++) {
+      fragment.appendChild(createPhoto(mixedArray[z]));
+    }
     return fragment;
   };
 

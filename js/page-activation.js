@@ -30,7 +30,7 @@
   setsAddressValue();
 
   var disableForm = function (data) {
-    data.forEach(function(item){
+    data.forEach(function (item) {
       item.setAttribute('disabled', 'disabled');
     });
   };
@@ -45,19 +45,19 @@
     var formFieldsets = someForm.querySelectorAll('fieldset');
 
     if (formInputs[0].getAttribute('disabled')) {
-      formInputs.forEach(function(item){
+      formInputs.forEach(function (item) {
         item.disabled = false;
       });
     }
 
     if (formSelects[0].getAttribute('disabled')) {
-      formSelects.forEach(function(item){
+      formSelects.forEach(function (item) {
         item.disabled = false;
       });
     }
 
     if (formFieldsets[0].getAttribute('disabled')) {
-      formFieldsets.forEach(function(item){
+      formFieldsets.forEach(function (item) {
         item.disabled = false;
       });
     }

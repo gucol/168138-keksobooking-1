@@ -43,8 +43,8 @@
 
   var removePins = function () {
     var ordinaryPins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
-    ordinaryPins.forEach(function(i){
-      pins.removeChild(i);
+    ordinaryPins.forEach(function (item) {
+      pins.removeChild(item);
     });
   };
 

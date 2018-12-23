@@ -5,7 +5,6 @@
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
   var photoInput = document.querySelector('.ad-form__upload input[type=file]');
   var photoPreview = document.querySelector('.ad-form__photo');
-  var photoContainer = document.querySelector('.ad-form__photo-container');
 
   var fileTypes = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -27,7 +26,7 @@
         var reader = new FileReader();
 
         reader.addEventListener('load', function () {
-          preview.src = reader.result;          
+          preview.src = reader.result;
           if (multiple) {
             var photo = document.createElement('img');
             photo.src = reader.result;
@@ -47,7 +46,7 @@
         });
         reader.readAsDataURL(file);
       }
-    }
+    };
 
     input.addEventListener('change', onUploadInputChange);
   };

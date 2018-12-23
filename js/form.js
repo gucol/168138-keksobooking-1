@@ -58,10 +58,10 @@
   timeFieldset.addEventListener('change', function (evt) {
     var target = evt.target;
     var selects = timeFieldset.querySelectorAll('select');
-    selects.forEach(function(item){
+    selects.forEach(function (item) {
       if (timeSelects.indexOf(item.id) !== -1) {
         item.value = target.value;
-      }      
+      }
     });
   });
 
