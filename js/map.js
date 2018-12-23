@@ -45,7 +45,7 @@
     var ordinaryPins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
     for (var i = 0; i < ordinaryPins.length; i++) {
       pins.removeChild(ordinaryPins[i]);
-    }
+    };
   };
 
   window.map = {

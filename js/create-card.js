@@ -11,7 +11,7 @@
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   // Объект, переводящий данные из type на русский язык:
-  var houseType = {
+  var HouseType = {
     flat: 'Квартира',
     bungalo: 'Бунгало',
     house: 'Дом',
@@ -77,7 +77,7 @@
     card.querySelector('.popup__title').textContent = ad.offer.title;
     card.querySelector('.popup__text--address').textContent = ad.offer.address;
     card.querySelector('.popup__text--price').innerHTML = ad.offer.price + '&#x20bd;<span>/ночь</span>';
-    card.querySelector('.popup__type').textContent = houseType[ad.offer.type];
+    card.querySelector('.popup__type').textContent = HouseType[ad.offer.type];
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     card.querySelector('.popup__photos').appendChild(drawPhotosList(ad.offer.photos));
     card.querySelector('.popup__close').addEventListener('click', deleteCard);
