@@ -66,17 +66,13 @@
 
   // фичи
   var getChangeFeature = function (data) {
+    var result = true;
     housingFeatures.forEach(function (item) {
       if (item.checked && data.offer.features.indexOf(item.value) < 0) {
-        return false;
-      }      
-    });
-/*    for (var i = 0; i < housingFeatures.length; i++) {
-      if (housingFeatures[i].checked && data.offer.features.indexOf(housingFeatures[i].value) < 0) {
-        return false;
+        result = false;
       }
-    }*/
-    return true;
+    });
+    return result;
   };
 
   var fulterPins = function () {

@@ -63,12 +63,9 @@
   var drawPhotosList = function (photos) {
     var fragment = document.createDocumentFragment();
     var mixedArray = window.util.shuffle(photos);
-    photos.forEach(function (item) {
-      fragment.appendChild(createPhoto(mixedArray[indexOf(item)]));
-    });
-/*    for (var z = 0; z < photos.length; z++) {
+    for (var z = 0; z < photos.length; z++) {
       fragment.appendChild(createPhoto(mixedArray[z]));
-    }*/
+    }
     return fragment;
   };
 
