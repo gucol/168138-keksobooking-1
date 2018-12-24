@@ -66,11 +66,16 @@
 
   // фичи
   var getChangeFeature = function (data) {
-    for (var i = 0; i < housingFeatures.length; i++) {
+    housingFeatures.forEach(function (item) {
+      if (item.checked && data.offer.features.indexOf(item.value) < 0) {
+        return false;
+      }      
+    });
+/*    for (var i = 0; i < housingFeatures.length; i++) {
       if (housingFeatures[i].checked && data.offer.features.indexOf(housingFeatures[i].value) < 0) {
         return false;
       }
-    }
+    }*/
     return true;
   };
 
