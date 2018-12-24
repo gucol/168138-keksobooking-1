@@ -71,7 +71,10 @@
   };
 
   var disativate = function () {
-    map.classList.remove('map--faded');
+    disableForm(fieldsetForm);
+    disableForm(mapFilterFieldset);
+    map.classList.add('map--faded');
+    form.classList.add('ad-form--disabled');
     window.map.removePins();
     window.map.removeExistingPopup();
     centerPin.style.left = PIN_COORD_X + 'px';
