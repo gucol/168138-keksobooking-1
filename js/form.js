@@ -66,17 +66,43 @@
   });
 
   var changeRoomNumberAndCapacity = function () {
-    var numberOfRooms = roomNumber.value;
-    var numberOfGuests = capacity.value;
+    var capacityOptions = capacity.querySelectorAll('option');
+    var roomNumberOptions = roomNumber.querySelectorAll('option');
 
-    if (numberOfRooms < 2 && numberOfRooms !== numberOfGuests) {
-      capacity.setCustomValidity('Введите допустимое количество гостей');
-    } else if (numberOfRooms >= 2 && (numberOfRooms < numberOfGuests || numberOfGuests === 0)) {
-      capacity.setCustomValidity('Введите допустимое количество гостей');
-    } else {
-      capacity.setCustomValidity('');
+    capacityOptions.forEach(function (item) {
+      item.disabled = false;
+    });
+
+    for (var t = 0; t < roomNumberOptions.length; t++) {
+      if (roomNumberOptions[t].selected === true) {
+        switch (roomNumberOptions[t].value) {
+          case '1':
+            capacityOptions[2].selected = true;
+            capacityOptions[0].disabled = true;
+            capacityOptions[1].disabled = true;
+            capacityOptions[3].disabled = true;
+            break;
+          case '2':
+            capacityOptions[1].selected = true;
+            capacityOptions[0].disabled = true;
+            capacityOptions[3].disabled = true;
+            break;
+          case '3':
+            capacityOptions[0].selected = true;
+            capacityOptions[3].disabled = true;
+            break;
+          case '100':
+            capacityOptions[3].selected = true;
+            capacityOptions[0].disabled = true;
+            capacityOptions[1].disabled = true;
+            capacityOptions[2].disabled = true;
+            break;
+        }
+      }
     }
   };
+
+  changeRoomNumberAndCapacity();
 
   roomNumber.addEventListener('change', function () {
     changeRoomNumberAndCapacity();
