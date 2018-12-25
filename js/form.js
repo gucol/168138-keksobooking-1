@@ -6,8 +6,6 @@
   var form = document.querySelector('.ad-form');
   var roomNumber = form.querySelector('#room_number');
   var capacity = form.querySelector('#capacity');
-  var numberOfRooms = roomNumber.value;
-  var numberOfGuests = capacity.value;
   var inputType = form.querySelector('#type');
   var inputPrice = form.querySelector('#price');
   var timeFieldset = form.querySelector('.ad-form__element--time');
@@ -68,14 +66,42 @@
   });
 
   var changeRoomNumberAndCapacity = function () {
-    if (numberOfRooms < 2 && numberOfRooms !== numberOfGuests) {
-      capacity.setCustomValidity('Введите допустимое количество гостей');
-    } else if (numberOfRooms >= 2 && (numberOfRooms < numberOfGuests || numberOfGuests === 0)) {
-      capacity.setCustomValidity('Введите допустимое количество гостей');
-    } else {
-      capacity.setCustomValidity('');
+    var capacityOptions = capacity.querySelectorAll('option');
+    var roomNumberOptions = roomNumber.querySelectorAll('option');
+
+    capacityOptions.forEach(function (item) {
+      item.disabled = false;
+    });
+
+    for (var t = 0; t < roomNumberOptions.length; t++) {
+      if (roomNumberOptions[t].selected === true) {
+        switch (roomNumberOptions[t].value) {
+          case '1':
+            capacityOptions[2].selected = true;
+            capacityOptions[0].disabled = true;
+            capacityOptions[1].disabled = true;
+            capacityOptions[3].disabled = true;
+            break;
+          case '2':
+            capacityOptions[1].selected = true;
+            capacityOptions[0].disabled = true;
+            capacityOptions[3].disabled = true;
+            break;
+          case '3':
+            capacityOptions[0].selected = true;
+            capacityOptions[3].disabled = true;
+            break;
+          case '100':
+            capacityOptions[3].selected = true;
+            capacityOptions[0].disabled = true;
+            capacityOptions[1].disabled = true;
+            capacityOptions[2].disabled = true;
+            break;
+        }
+      }
     }
   };
+
 
   roomNumber.addEventListener('change', function () {
     changeRoomNumberAndCapacity();
