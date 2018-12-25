@@ -102,12 +102,7 @@
     }
   };
 
-
   roomNumber.addEventListener('change', function () {
-    changeRoomNumberAndCapacity();
-  });
-
-  capacity.addEventListener('change', function () {
     changeRoomNumberAndCapacity();
   });
 
