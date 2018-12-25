@@ -4,7 +4,7 @@
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var SAVE_URL = 'https://js.dump.academy/keksobooking';
   var SUCCESS_STATUS = 200;
-  var TIMER_VALUE = 1000;
+  var TIMER_VALUE = 10000;
 
   // Функция, получающая данные от сервера:
   var load = function (onLoad, onError) {
