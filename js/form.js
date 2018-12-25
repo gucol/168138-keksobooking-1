@@ -6,6 +6,8 @@
   var form = document.querySelector('.ad-form');
   var roomNumber = form.querySelector('#room_number');
   var capacity = form.querySelector('#capacity');
+  var numberOfRooms = roomNumber.value;
+  var numberOfGuests = capacity.value;
   var inputType = form.querySelector('#type');
   var inputPrice = form.querySelector('#price');
   var timeFieldset = form.querySelector('.ad-form__element--time');
@@ -66,9 +68,6 @@
   });
 
   var changeRoomNumberAndCapacity = function () {
-    var numberOfRooms = roomNumber.value;
-    var numberOfGuests = capacity.value;
-
     if (numberOfRooms < 2 && numberOfRooms !== numberOfGuests) {
       capacity.setCustomValidity('Введите допустимое количество гостей');
     } else if (numberOfRooms >= 2 && (numberOfRooms < numberOfGuests || numberOfGuests === 0)) {
